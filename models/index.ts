@@ -8,17 +8,45 @@ const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.js")[env];
 const db:any = {};
 
-let sequelize: any;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config
-  );
-}
+const {DB_USER, DB_NAME, DB_PASS, DB_HOST, DATABASE_URL} = process.env
+
+// let sequelize: any;
+// if (config.use_env_variable) {
+//   sequelize = new Sequelize(process.env[config.use_env_variable], config);
+// } else {
+//   sequelize = new Sequelize(
+//     config.database,
+//     config.username,
+//     config.password,
+//     config
+//   );
+// }
+
+//para uso con variable de entorno locales y por ambiente
+// const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}`, {
+//   logging: false, // set to console.log to see the raw SQL queries
+//   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+//   // esta configuraion es por si es requerido por webserver desplegado, local no es necesario
+//   // dialectOptions:{
+//   //   ssl: {
+//   //     require : true,
+//   //     rejectUnauthorized: false
+//   //   }
+//   // }
+// });
+
+//para uso desplegado
+const sequelize = new Sequelize(DATABASE_URL, {
+  logging: false, // set to console.log to see the raw SQL queries
+  native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+  // esta configuraion es por si es requerido por webserver desplegado, local no es necesario
+  // dialectOptions:{
+  //   ssl: {
+  //     require : true,
+  //     rejectUnauthorized: false
+  //   }
+  // }
+});
 
 fs.readdirSync(__dirname)
   .filter((file: string) => {
@@ -39,11 +67,12 @@ fs.readdirSync(__dirname)
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
+    console.log(`${modelName} model conectado`);
     db[modelName].associate(db);
   }
 });
 
 db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+// db.Sequelize = Sequelize;
 
 export default db;
