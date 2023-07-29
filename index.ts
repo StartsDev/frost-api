@@ -1,8 +1,8 @@
-import express from "express";
-import cors from "cors";
-import morgan from "morgan";
-import authRoutes from "./routes/authRoutes";
-import dotenv from 'dotenv';
+const express = require("express");
+const cors = require("cors");
+const morgan= require("morgan");
+const authRoutes = require("./routes/authRoutes");
+const dotenv = require('dotenv');
 dotenv.config();
 
 console.log(process.env.PORT)
