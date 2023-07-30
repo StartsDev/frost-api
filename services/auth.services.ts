@@ -1,17 +1,17 @@
 import jwt from "jsonwebtoken";
 import { UserAttributes } from "../interfaces/auth.interface";
-import db from "../models";
+const User = require('../models/user')
 require("dotenv").config();
 
 const registerUser = async (user: UserAttributes) => {
   try {
-    const findUser = await db.User.findOne({ where: { email: user.email } });
+    const findUser = await User.findOne({ where: { email: user.email } });
     if (findUser) {
       return {
         msg: "This user already exists",
       };
     }
-    const newUser = await db.User.create(user);
+    const newUser = await User.create(user);
     if (newUser === null) {
       return {
         msg: "Failed to register user",
