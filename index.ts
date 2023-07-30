@@ -13,13 +13,13 @@ const port = process.env.PORT || 8000;
 import db from "./models";
 import { users } from "./seeders/users";
 // Seeders Users
-/* const createUsers = () => {
+const createUsers = () => {
   users.forEach(function (user) {
     db.User.create(user);
   });
-}; */
+};
 
-//createUsers();
+createUsers();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
