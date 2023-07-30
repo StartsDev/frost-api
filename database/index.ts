@@ -6,6 +6,8 @@
 // const env = process.env.NODE_ENV || "development";
 // const config = require(__dirname + "/../config/config.js")[env];
 // const db:any = {};
+import dotenv from 'dotenv';
+dotenv.config();
 const {DB_USER, DB_NAME, DB_PASS, DB_HOST, DATABASE_URL} = process.env
 
 
@@ -37,7 +39,7 @@ const { Sequelize, DataTypes, Op } = require('sequelize')
 // });
 
 //para uso desplegado
-const sequelize = new Sequelize('postgres://postgres:R4m1r0.8489@localhost/aire', {
+const sequelize = new Sequelize(DATABASE_URL, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
   // esta configuraion es por si es requerido por webserver desplegado, local no es necesario
