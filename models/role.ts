@@ -1,8 +1,9 @@
 'use strict';
+const {sequelize, DataTypes} = require ('../database/index')
 import { Model, UUIDV4 } from "sequelize";
 import { RoleAttributes } from "../interfaces/role.interface";
 
-module.exports = (sequelize:any, DataTypes:any) => {
+// module.exports = (sequelize:any, DataTypes:any) => {
   class Role extends Model<RoleAttributes> implements RoleAttributes {
     /**
      * Helper method for defining associations.
@@ -40,5 +41,7 @@ module.exports = (sequelize:any, DataTypes:any) => {
     sequelize,
     modelName: 'Role',
   });
-  return Role;
-};
+  // return Role;
+// };
+
+module.exports = Role

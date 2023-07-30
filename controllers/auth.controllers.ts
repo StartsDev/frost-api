@@ -17,8 +17,6 @@ const loginUser = async (req: Request, res: Response) => {
     const { password, email } = req.body;
     console.log('PASSWORD ', password)
     console.log('email ', email)
-    //const data = await fetchLogin(password, email)
-    //res.status(201).json({ msg: 'User login succeful', data })
     res.status(201).json({ msg: "User login succeful" });
   } catch (e) {
     console.log(e);
