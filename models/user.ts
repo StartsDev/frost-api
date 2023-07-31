@@ -1,9 +1,10 @@
 'use strict';
 import { Model, UUIDV4 } from "sequelize";
 import { UserAttributes } from "../interfaces/auth.interface";
+const {sequelize, DataTypes} = require ('../database/index')
 
 
-module.exports = (sequelize:any, DataTypes:any) => {
+// module.exports = (sequelize:any, DataTypes:any) => {
   class User extends Model<UserAttributes> implements UserAttributes {
     /**
      * Helper method for defining associations.
@@ -90,5 +91,7 @@ module.exports = (sequelize:any, DataTypes:any) => {
   User.addHook("beforeValidate", (user: User) => {
     user.setDefaultStatus();
   });
-  return User;
-};
+  // return User;
+// };
+
+module.exports = User
