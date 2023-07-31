@@ -10,7 +10,7 @@ module.exports = (sequelize:any, DataTypes:any) => {
      * The `models/index` file will call this method automatically.
      */
     id!:string;
-    description!:string;
+    role!:string;
     static associate(models:any) {
       // define association here
 
@@ -32,7 +32,7 @@ module.exports = (sequelize:any, DataTypes:any) => {
       allowNull: false,
       primaryKey: true,
     },
-    description: {
+    role: {
       type: DataTypes.STRING,
       allowNull: false,
     }

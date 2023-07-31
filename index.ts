@@ -2,6 +2,10 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import authRoutes from "./routes/authRoutes";
+import userRoutes from "./routes/userRoutes";
+import roleRoutes from "./routes/roleRoutes";
+import identificationRoutes from "./routes/identificationRoutes";
+import passwordRoutes from "./routes/passwordRoutes";
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -28,9 +32,13 @@ app.use(morgan("tiny"));
 
 //User Routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/role", roleRoutes);
+app.use("/api/v1/identification", identificationRoutes);
+app.use("/api/v1/password", passwordRoutes);
 
 // Server listen port
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log(`App listening on port ${port}`);
     

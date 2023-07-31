@@ -11,6 +11,7 @@ module.exports = (sequelize:any, DataTypes:any) => {
      * The `models/index` file will call this method automatically.
      */
     id!:string;
+    numIdent!:string;
     firstName!:string;
     lastName!:string;
     userName!:string;
@@ -26,12 +27,23 @@ module.exports = (sequelize:any, DataTypes:any) => {
     }
 
     static associate(models:any) {
+
       // Password
       User.hasOne(models.Password, {
         foreignKey: 'userId',
         as: 'password',
       }); 
       models.Password.belongsTo(User, {
+        foreignKey: 'userId',
+      });
+
+      // User - Permission
+      User.hasMany(models.UserPermissions, {
+        foreignKey: 'userId',
+        as: 'userspermissions',
+      });
+      
+      models.UserPermissions.belongsTo(User, {
         foreignKey: 'userId',
       });
     }
@@ -42,6 +54,10 @@ module.exports = (sequelize:any, DataTypes:any) => {
       defaultValue: UUIDV4,
       allowNull: false,
       primaryKey: true,
+    },
+    numIdent: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     firstName: {
       type: DataTypes.STRING,

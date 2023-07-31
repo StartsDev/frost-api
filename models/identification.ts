@@ -14,12 +14,12 @@ module.exports = (sequelize:any, DataTypes:any) => {
     static associate(models:any) {
       // define association here
       Identification.hasMany(models.User, {
-        foreignKey: 'IdentId',
+        foreignKey: 'identId',
         as: 'users',
       });
       
       models.User.belongsTo(Identification, {
-        foreignKey: 'IdentId',
+        foreignKey: 'identId',
       });
     }
   }

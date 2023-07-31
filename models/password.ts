@@ -25,7 +25,7 @@ module.exports = (sequelize:any, DataTypes:any) => {
     password: {
       type: DataTypes.STRING,
       defaultValue: null,
-    }
+    },
   }, {
     sequelize,
     modelName: 'Password',

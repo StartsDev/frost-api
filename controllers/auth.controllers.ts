@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { registerUser } from "../services/auth.services";
+import { registerUser, loginUserServ } from "../services/auth.services";
 
 //Register new user
 const createUser = async (req: Request, res: Response) => {
@@ -14,15 +14,11 @@ const createUser = async (req: Request, res: Response) => {
 //Login user
 const loginUser = async (req: Request, res: Response) => {
   try {
-    const { password, email } = req.body;
-    console.log('PASSWORD ', password)
-    console.log('email ', email)
-    //const data = await fetchLogin(password, email)
-    //res.status(201).json({ msg: 'User login succeful', data })
-    res.status(201).json({ msg: "User login succeful" });
+    const data = await loginUserServ(req.body)
+    res.status(201).json(data);
   } catch (e) {
     console.log(e);
-    //instanceOfError(res, error, 404)
   }
 };
+
 export { createUser, loginUser };
