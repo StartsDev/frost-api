@@ -1,8 +1,9 @@
 "use strict";
 import { Model, UUIDV4 } from "sequelize";
 import { PermissionsAttributes } from "../interfaces/permissions.interface";
+const {sequelize, DataTypes} = require ('../database/index')
 
-module.exports = (sequelize: any, DataTypes: any) => {
+//module.exports = (sequelize: any, DataTypes: any) => {
   class Permission
     extends Model<PermissionsAttributes>
     implements PermissionsAttributes
@@ -46,5 +47,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
       modelName: "Permission",
     }
   );
-  return Permission;
-};
+  //return Permission;
+//};
+module.exports = Permission

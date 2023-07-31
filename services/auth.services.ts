@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { UserAttributes } from "../interfaces/auth.interface";
+const Password = require('../models/password')
 const User = require('../models/user')
 require("dotenv").config();
 
@@ -34,7 +35,7 @@ const registerUser = async (user: UserAttributes) => {
 
 const loginUserServ = async (user: any) => {
   try {
-    const foundUser = await db.User.findOne({
+    const foundUser = await User.findOne({
       where: { numIdent: user.numIdent },
     });
     if (!foundUser) {
@@ -42,7 +43,7 @@ const loginUserServ = async (user: any) => {
         msg: "User not found...",
       };
     }
-    const foundPassword = await db.Password.findOne({
+    const foundPassword = await Password.findOne({
       where: { userId: foundUser.id },
     });
     if (!foundPassword) {

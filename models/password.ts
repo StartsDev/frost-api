@@ -1,8 +1,9 @@
 'use strict';
 import { Model, UUIDV4 } from "sequelize";
 import { PasswordAttributes } from "../interfaces/password.interface";
+const {sequelize, DataTypes} = require('../database/index')
 
-module.exports = (sequelize:any, DataTypes:any) => {
+
   class Password extends Model<PasswordAttributes> implements PasswordAttributes {
     /**
      * Helper method for defining associations.
@@ -30,5 +31,5 @@ module.exports = (sequelize:any, DataTypes:any) => {
     sequelize,
     modelName: 'Password',
   });
-  return Password;
-};
+
+  module.exports = Password

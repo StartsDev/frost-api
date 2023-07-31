@@ -1,15 +1,15 @@
-import db from "../models";
+const Identification = require('../models/identification')
 import { IdentificationAttributes } from "../interfaces/identification.interface";
 
 const createIdentServ = async (ident: IdentificationAttributes) => {
     try {
-      const findIdent = await db.Identification.findOne({ where: { name: ident.name } });
+      const findIdent = await Identification.findOne({ where: { name: ident.name } });
       if (findIdent) {
         return {
           msg: "This identification type already exists",
         };
       }
-      const newIdent = await db.Identification.create(ident);
+      const newIdent = await Identification.create(ident);
       if (newIdent === null) {
         return {
           msg: "Failed to register identification type",
@@ -26,7 +26,7 @@ const createIdentServ = async (ident: IdentificationAttributes) => {
   
   const getIdentServ = async () => {
       try{
-          const identifications = await db.Identification.findAll();
+          const identifications = await Identification.findAll();
           return {
               data: identifications
             };

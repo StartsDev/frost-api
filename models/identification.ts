@@ -1,8 +1,9 @@
 'use strict';
 import { Model, UUIDV4 } from "sequelize";
 import { IdentificationAttributes } from "../interfaces/identification.interface";
+const {sequelize, DataTypes} = require ('../database/index')
 
-module.exports = (sequelize:any, DataTypes:any) => {
+//module.exports = (sequelize:any, DataTypes:any) => {
   class Identification extends Model<IdentificationAttributes> implements IdentificationAttributes {
     /**
      * Helper method for defining associations.
@@ -38,5 +39,7 @@ module.exports = (sequelize:any, DataTypes:any) => {
     sequelize,
     modelName: 'Identification',
   });
-  return Identification;
-};
+  //return Identification;
+//};
+
+module.exports = Identification

@@ -1,17 +1,19 @@
-import db from "../models";
+const User = require('../models/user')
+const Identification = require('../models/identification')
+const Role = require('../models/role')
 
 const allUsers = async () => {
   try {
-    const users = await db.User.findAll({
+    const users = await User.findAll({
       where: { status: false },
       attributes: { exclude: ["createdAt", "updatedAt"] },
       include: [
         {
-          model: db.Identification,
+          model: Identification,
           attributes: { exclude: ["id", "createdAt", "updatedAt"] },
         },
         {
-          model: db.Role,
+          model: Role,
           attributes: { exclude: ["id", "createdAt", "updatedAt"] },
         },
       ],
@@ -26,16 +28,16 @@ const allUsers = async () => {
 
 const getUserServ = async (user: any) => {
   try {
-    const findUser = await db.User.findOne({
+    const findUser = await User.findOne({
       where: { id: user },
       attributes: { exclude: ["createdAt", "updatedAt"] },
       include: [
         {
-          model: db.Identification,
+          model: Identification,
           attributes: { exclude: ["id", "createdAt", "updatedAt"] },
         },
         {
-          model: db.Role,
+          model: Role,
           attributes: { exclude: ["id", "createdAt", "updatedAt"] },
         },
       ],
@@ -55,16 +57,16 @@ const getUserServ = async (user: any) => {
 
 const allUserRolServ = async (user: any) => {
   try {
-    const usersRol = await db.User.findAll({
+    const usersRol = await User.findAll({
       where: { roleId: user },
       attributes: { exclude: ["createdAt", "updatedAt"] },
       include: [
         {
-          model: db.Identification,
+          model: Identification,
           attributes: { exclude: ["id", "createdAt", "updatedAt"] },
         },
         {
-          model: db.Role,
+          model: Role,
           attributes: { exclude: ["id", "createdAt", "updatedAt"] },
         },
       ],
@@ -84,7 +86,7 @@ const allUserRolServ = async (user: any) => {
 const updateUserServ = async (id: any, user: any) => {
   try {
     const {numIdent,firstName, lastName, email, phone, identId, roleId} = user
-    const [updateUser] = await db.User.update(
+    const [updateUser] = await User.update(
       { numIdent, firstName, lastName, email, phone, identId, roleId},
       {
         where: {
@@ -108,7 +110,7 @@ const updateUserServ = async (id: any, user: any) => {
 
 const deleteUserServ = async (id: any) => {
   try {
-    const deletedUser = await db.User.update(
+    const deletedUser = await User.update(
       { status: true},
       {
         where: {

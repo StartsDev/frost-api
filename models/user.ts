@@ -91,7 +91,5 @@ const {sequelize, DataTypes} = require ('../database/index')
   User.addHook("beforeValidate", (user: User) => {
     user.setDefaultStatus();
   });
-  // return User;
-// };
 
 module.exports = User

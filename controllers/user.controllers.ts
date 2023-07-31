@@ -8,6 +8,9 @@ const getUsers = async (req: Request, res: Response) => {
     res.status(200).json(users);
   } catch (e) {
     console.log(e);
+    res.status(400).json({
+      msg:"Error"
+    });
   }
 };
 
