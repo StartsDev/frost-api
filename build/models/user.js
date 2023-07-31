@@ -19,6 +19,14 @@ class User extends sequelize_1.Model {
         models.Password.belongsTo(User, {
             foreignKey: 'userId',
         });
+        // User - Permission
+        User.hasMany(models.UserPermissions, {
+            foreignKey: 'userId',
+            as: 'userspermissions',
+        });
+        models.UserPermissions.belongsTo(User, {
+            foreignKey: 'userId',
+        });
     }
 }
 User.init({
@@ -27,6 +35,10 @@ User.init({
         defaultValue: sequelize_1.UUIDV4,
         allowNull: false,
         primaryKey: true,
+    },
+    numIdent: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
     firstName: {
         type: DataTypes.STRING,
@@ -59,6 +71,4 @@ User.init({
 User.addHook("beforeValidate", (user) => {
     user.setDefaultStatus();
 });
-// return User;
-// };
 module.exports = User;

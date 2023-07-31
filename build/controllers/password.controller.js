@@ -9,27 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = exports.createUser = void 0;
-const auth_services_1 = require("../services/auth.services");
-//Register new user
-const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createPassword = void 0;
+const password_services_1 = require("../services/password.services");
+//Register new role
+const createPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const data = yield (0, auth_services_1.registerUser)(req.body);
-        res.status(200).json(data);
+        const password = yield (0, password_services_1.createPwdServ)(req.body);
+        res.status(200).json(password);
     }
     catch (e) {
         console.log(e);
     }
 });
-exports.createUser = createUser;
-//Login user
-const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const data = yield (0, auth_services_1.loginUserServ)(req.body);
-        res.status(201).json(data);
-    }
-    catch (e) {
-        console.log(e);
-    }
-});
-exports.loginUser = loginUser;
+exports.createPassword = createPassword;
+/*  */ 

@@ -9,27 +9,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = exports.createUser = void 0;
-const auth_services_1 = require("../services/auth.services");
-//Register new user
-const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getRoles = exports.createRole = void 0;
+const role_services_1 = require("../services/role.services");
+//Register new role
+const createRole = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const data = yield (0, auth_services_1.registerUser)(req.body);
-        res.status(200).json(data);
+        const role = yield (0, role_services_1.createRoleServ)(req.body);
+        res.status(200).json(role);
     }
     catch (e) {
         console.log(e);
     }
 });
-exports.createUser = createUser;
-//Login user
-const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createRole = createRole;
+const getRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const data = yield (0, auth_services_1.loginUserServ)(req.body);
-        res.status(201).json(data);
+        const roles = yield (0, role_services_1.getRoleServ)();
+        res.status(200).json(roles);
     }
     catch (e) {
         console.log(e);
     }
 });
-exports.loginUser = loginUser;
+exports.getRoles = getRoles;

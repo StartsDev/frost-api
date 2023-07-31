@@ -9,27 +9,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = exports.createUser = void 0;
-const auth_services_1 = require("../services/auth.services");
-//Register new user
-const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getIdentifications = exports.createIdentification = void 0;
+const identification_services_1 = require("../services/identification.services");
+//Register new identification
+const createIdentification = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const data = yield (0, auth_services_1.registerUser)(req.body);
-        res.status(200).json(data);
+        const identification = yield (0, identification_services_1.createIdentServ)(req.body);
+        res.status(200).json(identification);
     }
     catch (e) {
         console.log(e);
     }
 });
-exports.createUser = createUser;
-//Login user
-const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createIdentification = createIdentification;
+// Get all identifications
+const getIdentifications = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const data = yield (0, auth_services_1.loginUserServ)(req.body);
-        res.status(201).json(data);
+        const identifications = yield (0, identification_services_1.getIdentServ)();
+        res.status(200).json(identifications);
     }
     catch (e) {
         console.log(e);
     }
 });
-exports.loginUser = loginUser;
+exports.getIdentifications = getIdentifications;

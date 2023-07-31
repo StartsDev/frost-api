@@ -1,35 +1,36 @@
-'use strict';
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const { sequelize, DataTypes } = require('../database/index');
-//module.exports = (sequelize:any, DataTypes:any) => {
-class Identification extends sequelize_1.Model {
+//module.exports = (sequelize: any, DataTypes: any) => {
+class Permission extends sequelize_1.Model {
     static associate(models) {
         // define association here
-        Identification.hasMany(models.User, {
-            foreignKey: 'identId',
-            as: 'users',
+        // Permission - User
+        Permission.hasMany(models.UserPermissions, {
+            foreignKey: 'permissionId',
+            as: 'userspermissions',
         });
-        models.User.belongsTo(Identification, {
-            foreignKey: 'identId',
+        models.UserPermissions.belongsTo(Permission, {
+            foreignKey: 'permissionId',
         });
     }
 }
-Identification.init({
+Permission.init({
     id: {
         type: DataTypes.UUID,
         defaultValue: sequelize_1.UUIDV4,
         allowNull: false,
         primaryKey: true,
     },
-    name: {
+    permission: {
         type: DataTypes.STRING,
         allowNull: false,
-    }
+    },
 }, {
     sequelize,
-    modelName: 'Identification',
+    modelName: "Permission",
 });
-//return Identification;
+//return Permission;
 //};
-module.exports = Identification;
+module.exports = Permission;

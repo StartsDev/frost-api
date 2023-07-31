@@ -8,10 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = exports.registerUser = void 0;
+exports.loginUserServ = exports.registerUser = void 0;
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const Password = require('../models/password');
 const User = require('../models/user');
 require("dotenv").config();
+const secretKey = process.env.SECRET_JWT;
 const registerUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const findUser = yield User.findOne({ where: { email: user.email } });
@@ -29,7 +36,7 @@ const registerUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
         //enviar email para verificacion de cuenta con Nodemailer y Handlebars
         return {
             msg: "User created successfully. Please, verify your email to activate your account.",
-            data: newUser,
+            user: newUser,
         };
     }
     catch (e) {
@@ -37,15 +44,45 @@ const registerUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.registerUser = registerUser;
-const loginUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
+const loginUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        //Type your code here...
+        const foundUser = yield User.findOne({
+            where: { numIdent: user.numIdent },
+        });
+        if (!foundUser) {
+            return {
+                msg: "User not found...",
+            };
+        }
+        const foundPassword = yield Password.findOne({
+            where: { userId: foundUser.id },
+        });
+        if (!foundPassword) {
+            return {
+                msg: "Password not registered to this user...",
+            };
+        }
+        const isPasswordMatch = yield bcrypt_1.default.compare(user.password, foundPassword.dataValues.password);
+        if (!isPasswordMatch) {
+            return {
+                msg: "Authentication failed. Incorrect password.",
+            };
+        }
+        const token = jsonwebtoken_1.default.sign({
+            userId: foundUser.id,
+            firstName: foundUser.firstName,
+            lastName: foundUser.lastName,
+            email: foundUser.email,
+        }, secretKey, {
+            expiresIn: "1h",
+        });
         return {
-            msg: "User logged",
+            msg: "User logged succesfully...",
+            token,
         };
     }
     catch (e) {
         throw new Error(e);
     }
 });
-exports.loginUser = loginUser;
+exports.loginUserServ = loginUserServ;

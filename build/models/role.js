@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const { sequelize, DataTypes } = require('../database/index');
 const sequelize_1 = require("sequelize");
-// module.exports = (sequelize:any, DataTypes:any) => {
 class Role extends sequelize_1.Model {
     static associate(models) {
         // define association here
@@ -22,7 +21,7 @@ Role.init({
         allowNull: false,
         primaryKey: true,
     },
-    description: {
+    role: {
         type: DataTypes.STRING,
         allowNull: false,
     }
@@ -30,6 +29,4 @@ Role.init({
     sequelize,
     modelName: 'Role',
 });
-// return Role;
-// };
 module.exports = Role;

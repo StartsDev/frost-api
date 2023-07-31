@@ -8,5 +8,7 @@ const router = (0, express_1.Router)();
 // Register new user
 router.post("/register", auth_controllers_1.createUser);
 // Login user
-//router.post("/login", createUser);
+router.post("/login", auth_controllers_1.loginUser);
+// Reset password
+// Update password
 exports.default = router;
