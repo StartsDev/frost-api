@@ -1,55 +1,55 @@
-'use strict';
+"use strict";
 import { Model, UUIDV4 } from "sequelize";
 import { UserAttributes } from "../interfaces/auth.interface";
-const {sequelize, DataTypes} = require ('../database/index')
+const Password = require("../models/password");
+const UserPermissions = require("../models/userPermissions");
+const { sequelize, DataTypes } = require("../database/index");
 
+class User extends Model<UserAttributes> implements UserAttributes {
+  /**
+   * Helper method for defining associations.
+   * This method is not a part of Sequelize lifecycle.
+   * The `models/index` file will call this method automatically.
+   */
+  id!: string;
+  numIdent!: string;
+  firstName!: string;
+  lastName!: string;
+  userName!: string;
+  email!: string;
+  phone!: string;
+  status!: boolean;
 
-// module.exports = (sequelize:any, DataTypes:any) => {
-  class User extends Model<UserAttributes> implements UserAttributes {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    id!:string;
-    numIdent!:string;
-    firstName!:string;
-    lastName!:string;
-    userName!:string;
-    email!:string;
-    phone!:string;
-    status!:boolean;
-
-     // Function to get the default status value
-     public setDefaultStatus(): void {
-      if (!this.userName) {
-        this.userName = `${this.firstName}.${this.lastName}`;
-      }
-    }
-
-    static associate(models:any) {
-
-      // Password
-      User.hasOne(models.Password, {
-        foreignKey: 'userId',
-        as: 'password',
-      }); 
-      models.Password.belongsTo(User, {
-        foreignKey: 'userId',
-      });
-
-      // User - Permission
-      User.hasMany(models.UserPermissions, {
-        foreignKey: 'userId',
-        as: 'userspermissions',
-      });
-      
-      models.UserPermissions.belongsTo(User, {
-        foreignKey: 'userId',
-      });
+  // Function to get the default status value
+  public setDefaultStatus(): void {
+    if (!this.userName) {
+      this.userName = `${this.firstName}.${this.lastName}`;
     }
   }
-  User.init({
+
+  static associate(password: any, userPermissions: any) {
+    // Password
+    User.hasOne(password, {
+      foreignKey: "userId",
+      as: "password",
+    });
+    password.belongsTo(User, {
+      foreignKey: "userId",
+    });
+
+    // User - Permission
+    User.hasMany(userPermissions, {
+      foreignKey: "userId",
+      as: "userspermissions",
+    });
+
+    userPermissions.belongsTo(User, {
+      foreignKey: "userId",
+    });
+  }
+}
+User.init(
+  {
     id: {
       type: DataTypes.UUID,
       defaultValue: UUIDV4,
@@ -83,13 +83,20 @@ const {sequelize, DataTypes} = require ('../database/index')
     status: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
-    }
-  }, {
+    },
+  },
+  {
     sequelize,
-    modelName: 'User',
-  });
-  User.addHook("beforeValidate", (user: User) => {
-    user.setDefaultStatus();
-  });
+    modelName: "User",
+    freezeTableName: true,
+  }
+);
 
-module.exports = User
+// aqui estoy ejecutando las relaciones
+User.associate(Password, UserPermissions);
+
+User.addHook("beforeValidate", (user: User) => {
+  user.setDefaultStatus();
+});
+
+module.exports = User;

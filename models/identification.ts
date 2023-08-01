@@ -1,6 +1,7 @@
 'use strict';
 import { Model, UUIDV4 } from "sequelize";
 import { IdentificationAttributes } from "../interfaces/identification.interface";
+const User = require("../models/user")
 const {sequelize, DataTypes} = require ('../database/index')
 
 //module.exports = (sequelize:any, DataTypes:any) => {
@@ -12,14 +13,14 @@ const {sequelize, DataTypes} = require ('../database/index')
      */
     id!:string;
     name!:string;
-    static associate(models:any) {
+    static associate(user:any) {
       // define association here
-      Identification.hasMany(models.User, {
+      Identification.hasMany(user, {
         foreignKey: 'identId',
         as: 'users',
       });
       
-      models.User.belongsTo(Identification, {
+      user.belongsTo(Identification, {
         foreignKey: 'identId',
       });
     }
@@ -38,8 +39,10 @@ const {sequelize, DataTypes} = require ('../database/index')
   }, {
     sequelize,
     modelName: 'Identification',
+    freezeTableName: true,
   });
-  //return Identification;
-//};
+
+  //Execute realtions
+  Identification.associate(User);
 
 module.exports = Identification
