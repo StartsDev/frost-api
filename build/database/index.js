@@ -40,14 +40,14 @@ const { Sequelize, DataTypes, Op } = require('sequelize');
 //para uso desplegado
 const sequelize = new Sequelize(DATABASE_URL, {
     logging: false,
-    native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+    native: false,
     // esta configuraion es por si es requerido por webserver desplegado, local no es necesario
-    // dialectOptions:{
-    //   ssl: {
-    //     require : true,
-    //     rejectUnauthorized: false
-    //   }
-    // }
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        }
+    }
 });
 // fs.readdirSync(__dirname)
 //   .filter((file: string) => {
