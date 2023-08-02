@@ -1,16 +1,17 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
+const User = require("../models/user");
 const { sequelize, DataTypes } = require('../database/index');
 //module.exports = (sequelize:any, DataTypes:any) => {
 class Identification extends sequelize_1.Model {
-    static associate(models) {
+    static associate(user) {
         // define association here
-        Identification.hasMany(models.User, {
+        Identification.hasMany(user, {
             foreignKey: 'identId',
             as: 'users',
         });
-        models.User.belongsTo(Identification, {
+        user.belongsTo(Identification, {
             foreignKey: 'identId',
         });
     }
@@ -29,7 +30,8 @@ Identification.init({
 }, {
     sequelize,
     modelName: 'Identification',
+    freezeTableName: true,
 });
-//return Identification;
-//};
+//Execute realtions
+Identification.associate(User);
 module.exports = Identification;

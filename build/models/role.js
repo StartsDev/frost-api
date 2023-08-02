@@ -1,16 +1,17 @@
-'use strict';
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { sequelize, DataTypes } = require('../database/index');
+const { sequelize, DataTypes } = require("../database/index");
 const sequelize_1 = require("sequelize");
+const User = require("../models/user");
 class Role extends sequelize_1.Model {
-    static associate(models) {
+    static associate(user) {
         // define association here
-        Role.hasMany(models.User, {
-            foreignKey: 'roleId',
-            as: 'users',
+        Role.hasMany(user, {
+            foreignKey: "roleId",
+            as: "users",
         });
-        models.User.belongsTo(Role, {
-            foreignKey: 'roleId',
+        user.belongsTo(Role, {
+            foreignKey: "roleId",
         });
     }
 }
@@ -24,9 +25,12 @@ Role.init({
     role: {
         type: DataTypes.STRING,
         allowNull: false,
-    }
+    },
 }, {
     sequelize,
-    modelName: 'Role',
+    modelName: "Role",
+    freezeTableName: true,
 });
+//Execute realtions
+Role.associate(User);
 module.exports = Role;

@@ -1,8 +1,9 @@
-'use strict';
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
-const { sequelize, DataTypes } = require('../database/index');
-// module.exports = (sequelize:any, DataTypes:any) => {
+const Password = require("../models/password");
+const UserPermissions = require("../models/userPermissions");
+const { sequelize, DataTypes } = require("../database/index");
 class User extends sequelize_1.Model {
     // Function to get the default status value
     setDefaultStatus() {
@@ -10,22 +11,22 @@ class User extends sequelize_1.Model {
             this.userName = `${this.firstName}.${this.lastName}`;
         }
     }
-    static associate(models) {
+    static associate(password, userPermissions) {
         // Password
-        User.hasOne(models.Password, {
-            foreignKey: 'userId',
-            as: 'password',
+        User.hasOne(password, {
+            foreignKey: "userId",
+            as: "password",
         });
-        models.Password.belongsTo(User, {
-            foreignKey: 'userId',
+        password.belongsTo(User, {
+            foreignKey: "userId",
         });
         // User - Permission
-        User.hasMany(models.UserPermissions, {
-            foreignKey: 'userId',
-            as: 'userspermissions',
+        User.hasMany(userPermissions, {
+            foreignKey: "userId",
+            as: "userspermissions",
         });
-        models.UserPermissions.belongsTo(User, {
-            foreignKey: 'userId',
+        userPermissions.belongsTo(User, {
+            foreignKey: "userId",
         });
     }
 }
@@ -63,11 +64,14 @@ User.init({
     status: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
-    }
+    },
 }, {
     sequelize,
-    modelName: 'User',
+    modelName: "User",
+    freezeTableName: true,
 });
+// aqui estoy ejecutando las relaciones
+User.associate(Password, UserPermissions);
 User.addHook("beforeValidate", (user) => {
     user.setDefaultStatus();
 });
