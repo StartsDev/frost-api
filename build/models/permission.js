@@ -1,19 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
-const { sequelize, DataTypes } = require('../database/index');
+const { sequelize, DataTypes } = require("../database/index");
 //module.exports = (sequelize: any, DataTypes: any) => {
 class Permission extends sequelize_1.Model {
-    static associate(models) {
+    static associate(userpermissions) {
         // define association here
         // Permission - User
-        Permission.hasMany(models.UserPermissions, {
-            foreignKey: 'permissionId',
-            as: 'userspermissions',
-        });
-        models.UserPermissions.belongsTo(Permission, {
-            foreignKey: 'permissionId',
-        });
+        /*    Permission.hasMany(userpermissions, {
+             foreignKey: "permissionId",
+             as: "userspermissions",
+           });
+       
+           userpermissions.belongsTo(Permission, {
+             foreignKey: "permissionId",
+           }); */
     }
 }
 Permission.init({
@@ -30,7 +31,8 @@ Permission.init({
 }, {
     sequelize,
     modelName: "Permission",
+    freezeTableName: true,
 });
-//return Permission;
-//};
+// aqui estoy ejecutando las relaciones
+//Permission.associate(UserPermissions);
 module.exports = Permission;

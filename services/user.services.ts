@@ -110,6 +110,12 @@ const updateUserServ = async (id: any, user: any) => {
 
 const deleteUserServ = async (id: any) => {
   try {
+    const findUser = await User.findOne({where: {id}});
+    if(findUser.status){
+      return {
+        msg: "User no valid",
+      };
+    }
     const deletedUser = await User.update(
       { status: true},
       {
