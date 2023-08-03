@@ -16,6 +16,7 @@ class User extends Model<UserAttributes> implements UserAttributes {
   firstName!: string;
   lastName!: string;
   userName!: string;
+  image!: string;
   email!: string;
   phone!: string;
   status!: boolean;
@@ -71,6 +72,10 @@ User.init(
     userName: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    image: {
+      type: DataTypes.STRING,
+      defaultValue: null
     },
     email: {
       type: DataTypes.STRING,

@@ -57,6 +57,17 @@ const loginUserServ = async (user: any) => {
   try {
     const foundUser = await User.findOne({
       where: { numIdent: user.numIdent },
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+      include: [
+        {
+          model: Identification,
+          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+        },
+        {
+          model: Role,
+          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+        },
+      ],
     });
     if (!foundUser) {
       return {
@@ -96,13 +107,14 @@ const loginUserServ = async (user: any) => {
     return {
       msg: "User logged succesfully...",
       token,
+      user: foundUser
     };
   } catch (e) {
     throw new Error(e as string);
   }
 };
 
-const getUserServ = async (user: any) => {
+const getUserServ = async (user: any, token: any) => {
   try {
     const findUser = await User.findOne({
       where: { id: user.userId },
@@ -125,6 +137,7 @@ const getUserServ = async (user: any) => {
     }
     return {
       user: findUser,
+      token
     }; 
   } catch (e) {
     throw new Error(e as string);
