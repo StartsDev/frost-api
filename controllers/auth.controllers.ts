@@ -25,7 +25,7 @@ const loginUser = async (req: Request, res: Response) => {
 //Get user info
 const getUserInfo = async (req: CustomRequest, res: Response) => {
   try {
-    const data = await getUserServ(req.decoded);
+    const data = await getUserServ(req.decoded, req.token);
     res.status(201).json(data);
   } catch (e) {
     console.log(e);

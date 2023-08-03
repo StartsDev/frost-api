@@ -14,6 +14,7 @@ interface DecodedToken {
 // Extiende la interfaz de Request para incluir la propiedad 'decoded':
 export interface CustomRequest extends Request {
   decoded?: DecodedToken;
+  token?: any;
 }
 
 export const verifyToken = async (
@@ -36,6 +37,7 @@ export const verifyToken = async (
       }
       // Agregar los datos decodificados a la solicitud para que puedan ser utilizados en los controladores
       req.decoded = decoded;
+      req.token = tokenArray;
 
       // Llama a la siguiente función del middleware
       next();

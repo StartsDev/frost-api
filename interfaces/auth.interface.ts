@@ -4,6 +4,7 @@ export interface UserAttributes {
     firstName: string;
     lastName: string;
     userName: string;
+    image: string;
     email: string;
     phone: string;
     status: boolean;

@@ -6,5 +6,8 @@ const router = Router();
 // Register new password
 router.post("/create", createPassword);
 
+// Update password
+
+
 export default router;
 
