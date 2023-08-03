@@ -4,7 +4,11 @@ import bcrypt from "bcrypt";
 import { UserAttributes } from "../interfaces/auth.interface";
 const Password = require("../models/password");
 const User = require("../models/user");
+const Role = require("../models/role");
+const Identification = require("../models/identification");
+
 require("dotenv").config();
+
 
 const secretKey = process.env.SECRET_JWT;
 
@@ -42,7 +46,7 @@ const registerUser = async (user: UserAttributes) => {
         user: newUser,
       };
 
-    //enviar email para verificacion de cuenta con Nodemailer y Handlebars
+      //enviar email para verificacion de cuenta con Nodemailer y Handlebars
     }
   } catch (e) {
     throw new Error(e as string);
@@ -85,7 +89,7 @@ const loginUserServ = async (user: any) => {
       },
       secretKey as string,
       {
-        expiresIn: "1h",
+        expiresIn: "3h",
       }
     );
 
@@ -98,4 +102,33 @@ const loginUserServ = async (user: any) => {
   }
 };
 
-export { registerUser, loginUserServ };
+const getUserServ = async (user: any) => {
+  try {
+    const findUser = await User.findOne({
+      where: { id: user.userId },
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+      include: [
+        {
+          model: Identification,
+          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+        },
+        {
+          model: Role,
+          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+        },
+      ],
+    });
+    if (!user) {
+      return {
+        msg: "This user doesn't exist",
+      };
+    }
+    return {
+      user: findUser,
+    }; 
+  } catch (e) {
+    throw new Error(e as string);
+  }
+};
+
+export { registerUser, loginUserServ, getUserServ };
