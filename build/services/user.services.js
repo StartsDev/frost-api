@@ -122,6 +122,12 @@ const updateUserServ = (id, user) => __awaiter(void 0, void 0, void 0, function*
 exports.updateUserServ = updateUserServ;
 const deleteUserServ = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const findUser = yield User.findOne({ where: { id } });
+        if (findUser.status) {
+            return {
+                msg: "User no valid",
+            };
+        }
         const deletedUser = yield User.update({ status: true }, {
             where: {
                 id,

@@ -12,32 +12,50 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUserServ = exports.registerUser = void 0;
+exports.getUserServ = exports.loginUserServ = exports.registerUser = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const { Op } = require("sequelize");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const Password = require('../models/password');
-const User = require('../models/user');
+const Password = require("../models/password");
+const User = require("../models/user");
+const Role = require("../models/role");
+const Identification = require("../models/identification");
 require("dotenv").config();
 const secretKey = process.env.SECRET_JWT;
 const registerUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const findUser = yield User.findOne({ where: { email: user.email } });
+        const findUser = yield User.findOne({ where: { numIdent: user.numIdent } });
         if (findUser) {
-            return {
-                msg: "This user already exists",
-            };
+            if (findUser.status) {
+                yield User.update({ status: false }, {
+                    where: {
+                        numIdent: findUser.numIdent,
+                    },
+                });
+                return {
+                    msg: "User created successfully. Please, verify your email to activate your account.",
+                };
+                // Notification email
+            }
+            else {
+                return {
+                    msg: "This user already exists, check your details...",
+                };
+            }
         }
-        const newUser = yield User.create(user);
-        if (newUser === null) {
+        else {
+            const newUser = yield User.create(user);
+            if (newUser === null) {
+                return {
+                    msg: "Failed to register user",
+                };
+            }
             return {
-                msg: "Failed to register user",
+                msg: "User created successfully. Please, verify your email to activate your account.",
+                user: newUser,
             };
+            //enviar email para verificacion de cuenta con Nodemailer y Handlebars
         }
-        //enviar email para verificacion de cuenta con Nodemailer y Handlebars
-        return {
-            msg: "User created successfully. Please, verify your email to activate your account.",
-            user: newUser,
-        };
     }
     catch (e) {
         throw new Error(e);
@@ -74,7 +92,7 @@ const loginUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
             lastName: foundUser.lastName,
             email: foundUser.email,
         }, secretKey, {
-            expiresIn: "1h",
+            expiresIn: "3h",
         });
         return {
             msg: "User logged succesfully...",
@@ -86,3 +104,33 @@ const loginUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.loginUserServ = loginUserServ;
+const getUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const findUser = yield User.findOne({
+            where: { id: user.userId },
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+            include: [
+                {
+                    model: Identification,
+                    attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+                },
+                {
+                    model: Role,
+                    attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+                },
+            ],
+        });
+        if (!user) {
+            return {
+                msg: "This user doesn't exist",
+            };
+        }
+        return {
+            user: findUser,
+        };
+    }
+    catch (e) {
+        throw new Error(e);
+    }
+});
+exports.getUserServ = getUserServ;

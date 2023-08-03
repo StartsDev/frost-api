@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { createUser, loginUser } from "../controllers/auth.controllers";
+import { createUser, loginUser, getUserInfo } from "../controllers/auth.controllers";
+import { verifyToken } from '../middleware/authjwt';
 //Implement midleware to access / authorization / validations
 
 const router = Router();
@@ -10,6 +11,9 @@ router.post("/register", createUser);
 
 // Login user
 router.post("/login", loginUser);
+
+// Get user info (Home page)
+router.get("/get-user-info", verifyToken, getUserInfo);
 
 // Reset password
 
