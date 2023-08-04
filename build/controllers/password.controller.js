@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createPassword = void 0;
+exports.newPassword = exports.forgotPassword = exports.createPassword = void 0;
 const password_services_1 = require("../services/password.services");
 //Register new role
 const createPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -22,4 +22,28 @@ const createPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.createPassword = createPassword;
-/*  */ 
+//Update password notification email
+const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        //const password = await updatePwdServ(req.body);
+        console.log('Hello ', req.decoded);
+        res.status(200).json({ msg: "Password notification..." });
+    }
+    catch (e) {
+        console.log(e);
+    }
+});
+exports.forgotPassword = forgotPassword;
+//Create new password password
+const newPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        //const password = await updatePwdServ(req.body);
+        console.log('Hello ', req.decoded);
+        res.status(200).json({ msg: "Password created..." });
+    }
+    catch (e) {
+        console.log(e);
+    }
+});
+exports.newPassword = newPassword;
+/*  */
