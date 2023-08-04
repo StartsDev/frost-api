@@ -14,21 +14,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createPwdServ = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const Password = require('../models/password');
-const User = require('../models/user');
+const Password = require("../models/password");
+const User = require("../models/user");
+const Identification = require("../models/identification");
 const saltRounds = 10; // Number of salt rounds for bcrypt
 const createPwdServ = (pwd) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        //console.log(pwd)
-        const findUser = yield User.findOne({ where: { id: pwd.userId } });
+        const findUser = yield User.findOne({
+            where: { id: pwd.userId, numIdent: pwd.numIdent },
+        });
+        const findIdent = yield Identification.findOne({
+            where: { id: pwd.identId },
+        });
         if (!findUser) {
             return {
-                msg: "This user has not registered before",
+                msg: "User is unknown...",
             };
         }
-        console.log(findUser);
-        console.log(pwd.userId);
-        const findPasword = yield Password.findOne({ where: { userId: pwd.userId } });
+        if (!findIdent) {
+            return {
+                msg: "Identification type is unknown...",
+            };
+        }
+        const findPasword = yield Password.findOne({
+            where: { userId: pwd.userId },
+        });
         if (findPasword) {
             return {
                 msg: "This user has a password asigned currently",
