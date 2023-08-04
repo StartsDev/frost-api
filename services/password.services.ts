@@ -8,7 +8,7 @@ const saltRounds = 10; // Number of salt rounds for bcrypt
 const createPwdServ = async (pwd: any) => {
   try {
     const findUser = await User.findOne({
-      where: { id: pwd.userId, numIdent: pwd.numIdent },
+      where: { numIdent: pwd.numIdent },
     });
     const findIdent = await Identification.findOne({
       where: { id: pwd.identId },
@@ -24,7 +24,7 @@ const createPwdServ = async (pwd: any) => {
       };
     }
     const findPasword = await Password.findOne({
-      where: { userId: pwd.userId },
+      where: { userId: findUser.id },
     });
 
     if (findPasword) {
@@ -39,7 +39,7 @@ const createPwdServ = async (pwd: any) => {
 
     const newPassword = await Password.create({
       password: hashedPassword,
-      userId: pwd.userId,
+      userId: findUser.id,
     });
     if (newPassword === null) {
       return {

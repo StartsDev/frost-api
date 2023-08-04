@@ -21,7 +21,7 @@ const saltRounds = 10; // Number of salt rounds for bcrypt
 const createPwdServ = (pwd) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const findUser = yield User.findOne({
-            where: { id: pwd.userId, numIdent: pwd.numIdent },
+            where: { numIdent: pwd.numIdent },
         });
         const findIdent = yield Identification.findOne({
             where: { id: pwd.identId },
@@ -37,7 +37,7 @@ const createPwdServ = (pwd) => __awaiter(void 0, void 0, void 0, function* () {
             };
         }
         const findPasword = yield Password.findOne({
-            where: { userId: pwd.userId },
+            where: { userId: findUser.id },
         });
         if (findPasword) {
             return {
@@ -49,7 +49,7 @@ const createPwdServ = (pwd) => __awaiter(void 0, void 0, void 0, function* () {
         const hashedPassword = yield bcrypt_1.default.hash(pwd.password, salt);
         const newPassword = yield Password.create({
             password: hashedPassword,
-            userId: pwd.userId,
+            userId: findUser.id,
         });
         if (newPassword === null) {
             return {
