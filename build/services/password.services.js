@@ -58,6 +58,7 @@ const createPwdServ = (pwd) => __awaiter(void 0, void 0, void 0, function* () {
         }
         return {
             msg: "Password asigned successfully...",
+            status: true
         };
     }
     catch (e) {

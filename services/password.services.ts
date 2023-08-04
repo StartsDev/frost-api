@@ -48,6 +48,7 @@ const createPwdServ = async (pwd: any) => {
     }
     return {
       msg: "Password asigned successfully...",
+      status: true
     };
   } catch (e) {
     throw new Error(e as string);
