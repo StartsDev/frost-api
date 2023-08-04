@@ -66,6 +66,17 @@ const loginUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const foundUser = yield User.findOne({
             where: { numIdent: user.numIdent },
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+            include: [
+                {
+                    model: Identification,
+                    attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+                },
+                {
+                    model: Role,
+                    attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+                },
+            ],
         });
         if (!foundUser) {
             return {
@@ -97,6 +108,7 @@ const loginUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
         return {
             msg: "User logged succesfully...",
             token,
+            user: foundUser
         };
     }
     catch (e) {
@@ -104,7 +116,7 @@ const loginUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.loginUserServ = loginUserServ;
-const getUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
+const getUserServ = (user, token) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const findUser = yield User.findOne({
             where: { id: user.userId },
@@ -127,6 +139,7 @@ const getUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
         }
         return {
             user: findUser,
+            token
         };
     }
     catch (e) {

@@ -28,6 +28,7 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             }
             // Agregar los datos decodificados a la solicitud para que puedan ser utilizados en los controladores
             req.decoded = decoded;
+            req.token = tokenArray;
             // Llama a la siguiente función del middleware
             next();
         });

@@ -36,7 +36,7 @@ exports.loginUser = loginUser;
 //Get user info
 const getUserInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const data = yield (0, auth_services_1.getUserServ)(req.decoded);
+        const data = yield (0, auth_services_1.getUserServ)(req.decoded, req.token);
         res.status(201).json(data);
     }
     catch (e) {
