@@ -57,10 +57,12 @@ const getUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
         if (!user) {
             return {
                 msg: "This user doesn't exist",
+                success: false
             };
         }
         return {
             user: findUser,
+            success: true
         };
     }
     catch (e) {

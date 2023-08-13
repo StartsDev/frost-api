@@ -103,7 +103,7 @@ const loginUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
             lastName: foundUser.lastName,
             email: foundUser.email,
         }, secretKey, {
-            expiresIn: "3h",
+            expiresIn: "30d",
         });
         return {
             msg: "User logged succesfully...",
