@@ -15,12 +15,14 @@ const createPwdServ = async (pwd: any) => {
     });
     if (!findUser) {
       return {
-        msg: "User is unknown...",
+        msg: "Usuario desconocido...",
+        success: false
       };
     }
     if(!findIdent){
       return {
-        msg: "Identification type is unknown...",
+        msg: "Tipo de identificación desconocida...",
+        succes: false
       };
     }
     const findPasword = await Password.findOne({
@@ -29,7 +31,8 @@ const createPwdServ = async (pwd: any) => {
 
     if (findPasword) {
       return {
-        msg: "This user has a password asigned currently",
+        msg: "Este usuario tiene un password asignado",
+        success: false
       };
     }
 
@@ -41,13 +44,15 @@ const createPwdServ = async (pwd: any) => {
       password: hashedPassword,
       userId: findUser.id,
     });
-    if (newPassword === null) {
+    if (!newPassword) {
       return {
-        msg: "Failed to register password",
+        msg: "Error al registrar el password",
+        success: false
       };
     }
     return {
-      msg: "Password asigned successfully...",
+      msg: "Clave asignada satisfactoriamente...",
+      success: true
     };
   } catch (e) {
     throw new Error(e as string);

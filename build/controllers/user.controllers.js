@@ -14,13 +14,30 @@ const user_services_1 = require("../services/user.services");
 // Get all users
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield (0, user_services_1.allUsers)();
-        res.status(200).json(users);
+        const page = parseInt(req.query.page) || undefined; // Get the requested page from query parameter
+        const pageSize = parseInt(req.query.pageSize) || undefined; // Get the requested page size from query parameter
+        const { users, totalCount } = yield (0, user_services_1.allUsers)(page, pageSize);
+        if (!page && !pageSize) {
+            res.status(200).json({
+                users,
+                numItmes: totalCount,
+            });
+        }
+        else {
+            const totalPages = Math.ceil(totalCount / (pageSize !== null && pageSize !== void 0 ? pageSize : totalCount));
+            res.status(200).json({
+                users,
+                numItmes: totalCount,
+                currentPage: page,
+                totalPages,
+            });
+        }
     }
-    catch (e) {
-        console.log(e);
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).json({ error: error.message });
         res.status(400).json({
-            msg: "Error"
+            msg: "Error",
         });
     }
 });
@@ -31,19 +48,37 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield (0, user_services_1.getUserServ)(req.params.id);
         res.status(200).json(user);
     }
-    catch (e) {
-        console.log(e);
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).json({ error: error.message });
     }
 });
 exports.getUser = getUser;
 // Get users by role
 const getUsersRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield (0, user_services_1.allUserRolServ)(req.params.rolId);
-        res.status(200).json(users);
+        const page = parseInt(req.query.page) || undefined; // Get the requested page from query parameter
+        const pageSize = parseInt(req.query.pageSize) || undefined; // Get the requested page size from query parameter
+        const { usersRol, totalCount } = yield (0, user_services_1.allUserRolServ)(req.params.rolId, page, pageSize);
+        if (!page && !pageSize) {
+            res.status(200).json({
+                usersRol,
+                numItmes: totalCount,
+            });
+        }
+        else {
+            const totalPages = Math.ceil(totalCount / (pageSize !== null && pageSize !== void 0 ? pageSize : totalCount));
+            res.status(200).json({
+                usersRol,
+                totalItems: totalCount,
+                currentPage: page,
+                totalPages,
+            });
+        }
     }
-    catch (e) {
-        console.log(e);
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).json({ error: error.message });
     }
 });
 exports.getUsersRol = getUsersRol;
@@ -53,8 +88,9 @@ const editUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield (0, user_services_1.updateUserServ)(req.params.id, req.body);
         res.status(200).json(user);
     }
-    catch (e) {
-        console.log(e);
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).json({ error: error.message });
     }
 });
 exports.editUser = editUser;
@@ -64,8 +100,9 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const user = yield (0, user_services_1.deleteUserServ)(req.params.id);
         res.status(200).json(user);
     }
-    catch (e) {
-        console.log(e);
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).json({ error: error.message });
     }
 });
 exports.deleteUser = deleteUser;

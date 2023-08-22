@@ -1,26 +1,75 @@
-const User = require('../models/user')
-const Identification = require('../models/identification')
-const Role = require('../models/role')
+import { users } from "./../seeders/users";
+const User = require("../models/user");
+const Identification = require("../models/identification");
+const Role = require("../models/role");
 
-const allUsers = async () => {
+const allUsers = async (page?: number, pageSize?: number) => {
   try {
-    const users = await User.findAll({
-      where: { status: false },
-      attributes: { exclude: ["createdAt", "updatedAt"] },
-      include: [
-        {
-          model: Identification,
-          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
-        },
-        {
-          model: Role,
-          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
-        },
-      ],
-    });
-    return {
-      users,
-    };
+    let users;
+    if (page && pageSize) {
+      const offset = (page - 1) * pageSize;
+      users = await User.findAll({
+        offset,
+        limit: pageSize,
+        where: { status: false },
+        attributes: { exclude: ["updatedAt"] },
+        order: [["createdAt", "DESC"]],
+        include: [
+          {
+            model: Identification,
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          },
+          {
+            model: Role,
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          },
+        ],
+      });
+
+      if (!users) {
+        return {
+          msg: "No existen usuarios registrados...",
+          users,
+          success: false,
+        };
+      }
+      const totalCount = await User.count({ where: { status: false } });
+      return {
+        users,
+        totalCount,
+        success: true,
+      };
+    } else {
+      users = await User.findAll({
+        where: { status: false },
+        attributes: { exclude: ["updatedAt"] },
+        order: [["createdAt", "DESC"]],
+        include: [
+          {
+            model: Identification,
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          },
+          {
+            model: Role,
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          },
+        ],
+      });
+
+      if (!users) {
+        return {
+          msg: "No existen usuarios registrados...",
+          users,
+          success: false,
+        };
+      }
+      const totalCount = await User.count({ where: { status: false } });
+      return {
+        users,
+        totalCount,
+        success: true,
+      };
+    }
   } catch (e) {
     throw new Error(e as string);
   }
@@ -44,50 +93,103 @@ const getUserServ = async (user: any) => {
     });
     if (!user) {
       return {
-        msg: "This user doesn't exist",
+        msg: "Este usuario no existe...",
+        success: false,
       };
     }
     return {
-      user: findUser,
+      findUser,
+      success: true,
     };
   } catch (e) {
     throw new Error(e as string);
   }
 };
 
-const allUserRolServ = async (user: any) => {
+const allUserRolServ = async (user: any, page?: number, pageSize?: number) => {
   try {
-    const usersRol = await User.findAll({
-      where: { roleId: user },
-      attributes: { exclude: ["createdAt", "updatedAt"] },
-      include: [
-        {
-          model: Identification,
-          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
-        },
-        {
-          model: Role,
-          attributes: { exclude: ["id", "createdAt", "updatedAt"] },
-        },
-      ],
-    });
-    if (!usersRol) {
+    let usersRol;
+    if (page && pageSize) {
+      const offset = (page - 1) * pageSize;
+      usersRol = await User.findAll({
+        offset,
+        limit: pageSize,
+        where: { roleId: user },
+        attributes: { exclude: ["updatedAt"] },
+        order: [["createdAt", "DESC"]],
+        include: [
+          {
+            model: Identification,
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          },
+          {
+            model: Role,
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          },
+        ],
+      });
+      if (!usersRol) {
+        return {
+          msg: "No existen usuarios con este rol...",
+          users,
+          success: false,
+        };
+      }
+
+      const totalCount = await User.count({
+        where: { status: false, roleId: user },
+      });
+
       return {
-        msg: "Users does exist with that role",
-        users: [],
+        usersRol,
+        totalCount,
+        success: true,
+      };
+    } else {
+      usersRol = await User.findAll({
+        where: { roleId: user },
+        attributes: { exclude: ["updatedAt"] },
+        order: [["createdAt", "DESC"]],
+        include: [
+          {
+            model: Identification,
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          },
+          {
+            model: Role,
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          },
+        ],
+      });
+      if (!usersRol) {
+        return {
+          msg: "No existen usuarios con este rol...",
+          users,
+          success: false,
+        };
+      }
+
+      const totalCount = await User.count({
+        where: { status: false, roleId: user },
+      });
+
+      return {
+        usersRol,
+        totalCount,
+        success: true,
       };
     }
-    return { users: usersRol };
   } catch (e) {
     throw new Error(e as string);
   }
 };
 
-const updateUserServ = async (id: any, user: any) => {
+const updateUserServ = async (id: any, userp: any) => {
   try {
-    const {numIdent,firstName, lastName, email, phone, identId, roleId} = user
+    const { numIdent, firstName, lastName, email, phone, identId, roleId } =
+      userp;
     const [updateUser] = await User.update(
-      { numIdent, firstName, lastName, email, phone, identId, roleId},
+      { numIdent, firstName, lastName, email, phone, identId, roleId },
       {
         where: {
           id,
@@ -97,11 +199,21 @@ const updateUserServ = async (id: any, user: any) => {
     );
     if (!updateUser) {
       return {
-        msg: "User no valid",
+        msg: "Usuario no válido...",
+        success: false,
       };
     }
+    if (updateUser <= 0) {
+      return {
+        msg: "Actualización no realizada...",
+        success: false,
+      };
+    }
+    const user = await User.findOne({ where: { id } });
     return {
-      msg: "User updated succesfully"
+      msg: "Usuario actualizado satisfactoriamente...",
+      user,
+      success: true,
     };
   } catch (e) {
     throw new Error(e as string);
@@ -110,14 +222,15 @@ const updateUserServ = async (id: any, user: any) => {
 
 const deleteUserServ = async (id: any) => {
   try {
-    const findUser = await User.findOne({where: {id}});
-    if(findUser.status){
+    const findUser = await User.findOne({ where: { id } });
+    if (findUser.status) {
       return {
-        msg: "User no valid",
+        msg: "User no válido...",
+        success: false,
       };
     }
     const deletedUser = await User.update(
-      { status: true},
+      { status: true },
       {
         where: {
           id,
@@ -126,16 +239,23 @@ const deleteUserServ = async (id: any) => {
     );
     if (!deletedUser) {
       return {
-        msg: "User no valid",
+        msg: "User no válido...",
+        success: false,
       };
     }
     return {
-      msg: "User deleted succesfully",
+      msg: "Usuario eliminado satisfactoriamente...",
+      success: true,
     };
   } catch (e) {
     throw new Error(e as string);
   }
 };
 
-
-export { allUsers, getUserServ, allUserRolServ, updateUserServ, deleteUserServ };
+export {
+  allUsers,
+  getUserServ,
+  allUserRolServ,
+  updateUserServ,
+  deleteUserServ,
+};

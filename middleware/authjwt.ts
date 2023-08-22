@@ -1,7 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 const jwt = require("jsonwebtoken");
+import { getUserServ } from "../services/user.services";
+
 require("dotenv").config();
+
 const secretKey = process.env.SECRET_JWT;
+const super_user = process.env.SUPER_USER;
+const admin = process.env.ADMIN;
 
 // estructura de los datos decodificados del token:
 interface DecodedToken {
@@ -47,13 +52,42 @@ export const verifyToken = async (
   }
 };
 
-// Verificamos si el rol del usuario es Administrador
-export const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
-  /* try {
-        const user = await User.findById(req.userId);
-        if (user.role !== "admin") return res.status(401).json({ message: ROLE_ERROR });
-        next();
-    } catch (error) {
-        return res.status(401).json({ error });
-    } */
+// Verificamos si el rol del usuario es Administrador o Super_Usuario
+export const isSuperUser_isAdmin = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const id = req.decoded?.userId;
+    const user = await getUserServ(id);
+    if (
+      user.findUser.dataValues.Role.dataValues.role !== super_user &&
+      user.findUser.dataValues.Role.dataValues.role !== admin
+    )
+      return res.status(401).json({
+        message: "El rol de usuario no es super usuario o administrador",
+      });
+    next();
+  } catch (error) {
+    return res.status(401).json({ error });
+  }
+};
+
+export const isSuperUser = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const id = req.decoded?.userId;
+    const user = await getUserServ(id);
+    if (user.findUser.dataValues.Role.dataValues.role !== super_user)
+      return res
+        .status(401)
+        .json({ message: "El rol de usuario no es super usuario" });
+    next();
+  } catch (error) {
+    return res.status(401).json({ error });
+  }
 };
