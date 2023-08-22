@@ -102,7 +102,7 @@ const loginUserServ = async (user: any) => {
       },
       secretKey as string,
       {
-        expiresIn: "3h",
+        expiresIn: "30d",
       }
     );
 
