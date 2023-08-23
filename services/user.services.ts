@@ -45,10 +45,12 @@ const getUserServ = async (user: any) => {
     if (!user) {
       return {
         msg: "This user doesn't exist",
+        success: false
       };
     }
     return {
       user: findUser,
+      success: true
     };
   } catch (e) {
     throw new Error(e as string);
