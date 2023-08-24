@@ -9,25 +9,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRoleServ = exports.createRoleServ = void 0;
+exports.deleteRoleServ = exports.updateRoleServ = exports.getRoleServ = exports.createRoleServ = void 0;
 const Role = require('../models/role');
+// Create role
 const createRoleServ = (role) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const findRole = yield Role.findOne({ where: { role: role.role } });
         if (findRole) {
             return {
-                msg: "This role already exists",
+                msg: "Este rol ya existe...",
+                succcess: false
             };
         }
         const newRole = yield Role.create(role);
-        if (newRole === null) {
+        if (!newRole) {
             return {
-                msg: "Failed to register role",
+                msg: "Problemas al registrar el rol...",
+                success: false
             };
         }
         return {
-            msg: "Role created successfully...",
-            data: newRole,
+            msg: "Rol creado satisfactoriamente...",
+            newRole,
+            success: true
         };
     }
     catch (e) {
@@ -35,11 +39,13 @@ const createRoleServ = (role) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.createRoleServ = createRoleServ;
+// Get all roles
 const getRoleServ = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const roles = yield Role.findAll();
         return {
-            data: roles
+            roles,
+            success: true
         };
     }
     catch (e) {
@@ -47,3 +53,61 @@ const getRoleServ = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getRoleServ = getRoleServ;
+//Update role
+const updateRoleServ = (id, rol) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const roleFound = yield Role.findOne({ where: { id } });
+        if (!roleFound) {
+            return {
+                msg: "Rol no encontrado",
+                success: false,
+            };
+        }
+        const [updateRole] = yield Role.update(rol, {
+            where: {
+                id,
+            },
+            returning: true,
+        });
+        if (updateRole <= 0) {
+            return {
+                msg: "Actualización no realizada...",
+                success: false,
+            };
+        }
+        const role = yield Role.findOne({ where: { id } });
+        return {
+            msg: "Rol actualizado satisfactoriamente...",
+            role,
+            success: true,
+        };
+    }
+    catch (e) {
+        throw new Error(e);
+    }
+});
+exports.updateRoleServ = updateRoleServ;
+//Delete role
+const deleteRoleServ = (rol) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const role = yield Role.destroy({
+            where: {
+                id: rol,
+            },
+        });
+        if (!role) {
+            return {
+                msg: "Rol no registrado...",
+                success: false,
+            };
+        }
+        return {
+            msg: "Rol eliminado...",
+            success: true,
+        };
+    }
+    catch (e) {
+        throw new Error(e);
+    }
+});
+exports.deleteRoleServ = deleteRoleServ;

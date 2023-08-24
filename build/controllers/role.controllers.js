@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRoles = exports.createRole = void 0;
+exports.deleteRole = exports.updateRole = exports.getRoles = exports.createRole = void 0;
 const role_services_1 = require("../services/role.services");
 //Register new role
 const createRole = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -32,3 +32,27 @@ const getRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getRoles = getRoles;
+//Update role
+const updateRole = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const identification = yield (0, role_services_1.updateRoleServ)(req.params.id, req.body);
+        res.status(200).json(identification);
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).json({ error: error.message });
+    }
+});
+exports.updateRole = updateRole;
+// Delete role
+const deleteRole = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const identifications = yield (0, role_services_1.deleteRoleServ)(req.params.id);
+        res.status(200).json(identifications);
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).json({ error: error.message });
+    }
+});
+exports.deleteRole = deleteRole;

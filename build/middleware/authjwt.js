@@ -9,10 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isAdmin = exports.verifyToken = void 0;
+exports.isSuperUser = exports.isSuperUser_isAdmin = exports.verifyToken = void 0;
 const jwt = require("jsonwebtoken");
+const user_services_1 = require("../services/user.services");
 require("dotenv").config();
 const secretKey = process.env.SECRET_JWT;
+const super_user = process.env.SUPER_USER;
+const admin = process.env.ADMIN;
 const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //Obtener token del encabezado de autorización
@@ -38,14 +41,37 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.verifyToken = verifyToken;
-// Verificamos si el rol del usuario es Administrador
-const isAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    /* try {
-          const user = await User.findById(req.userId);
-          if (user.role !== "admin") return res.status(401).json({ message: ROLE_ERROR });
-          next();
-      } catch (error) {
-          return res.status(401).json({ error });
-      } */
+// Verificamos si el rol del usuario es Administrador o Super_Usuario
+const isSuperUser_isAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        const id = (_a = req.decoded) === null || _a === void 0 ? void 0 : _a.userId;
+        const user = yield (0, user_services_1.getUserServ)(id);
+        if (user.findUser.dataValues.Role.dataValues.role !== super_user &&
+            user.findUser.dataValues.Role.dataValues.role !== admin)
+            return res.status(401).json({
+                message: "El rol de usuario no es super usuario o administrador",
+            });
+        next();
+    }
+    catch (error) {
+        return res.status(401).json({ error });
+    }
 });
-exports.isAdmin = isAdmin;
+exports.isSuperUser_isAdmin = isSuperUser_isAdmin;
+const isSuperUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    try {
+        const id = (_b = req.decoded) === null || _b === void 0 ? void 0 : _b.userId;
+        const user = yield (0, user_services_1.getUserServ)(id);
+        if (user.findUser.dataValues.Role.dataValues.role !== super_user)
+            return res
+                .status(401)
+                .json({ message: "El rol de usuario no es super usuario" });
+        next();
+    }
+    catch (error) {
+        return res.status(401).json({ error });
+    }
+});
+exports.isSuperUser = isSuperUser;

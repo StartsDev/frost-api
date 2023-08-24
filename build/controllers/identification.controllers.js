@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getIdentifications = exports.createIdentification = void 0;
+exports.deleteIdentification = exports.updateIdentification = exports.getIdentifications = exports.createIdentification = void 0;
 const identification_services_1 = require("../services/identification.services");
 //Register new identification
 const createIdentification = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -17,8 +17,9 @@ const createIdentification = (req, res) => __awaiter(void 0, void 0, void 0, fun
         const identification = yield (0, identification_services_1.createIdentServ)(req.body);
         res.status(200).json(identification);
     }
-    catch (e) {
-        console.log(e);
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).json({ error: error.message });
     }
 });
 exports.createIdentification = createIdentification;
@@ -28,8 +29,33 @@ const getIdentifications = (req, res) => __awaiter(void 0, void 0, void 0, funct
         const identifications = yield (0, identification_services_1.getIdentServ)();
         res.status(200).json(identifications);
     }
-    catch (e) {
-        console.log(e);
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).json({ error: error.message });
     }
 });
 exports.getIdentifications = getIdentifications;
+//Update identification
+const updateIdentification = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const identification = yield (0, identification_services_1.updateIdentServ)(req.params.id, req.body);
+        res.status(200).json(identification);
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).json({ error: error.message });
+    }
+});
+exports.updateIdentification = updateIdentification;
+// Delete identification
+const deleteIdentification = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const identifications = yield (0, identification_services_1.deleteIdentServ)(req.params.id);
+        res.status(200).json(identifications);
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).json({ error: error.message });
+    }
+});
+exports.deleteIdentification = deleteIdentification;

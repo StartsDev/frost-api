@@ -33,26 +33,24 @@ const registerUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
                     },
                 });
                 return {
-                    msg: "User created successfully. Please, verify your email to activate your account.",
+                    msg: "Usuario creado satisfactoriamente. Por favor verificar su correo...",
+                    success: true
                 };
                 // Notification email
             }
             else {
                 return {
-                    msg: "This user already exists, check your details...",
+                    msg: "Este usuario ya esta registrado...",
+                    success: false
                 };
             }
         }
         else {
             const newUser = yield User.create(user);
-            if (newUser === null) {
-                return {
-                    msg: "Failed to register user",
-                };
-            }
             return {
-                msg: "User created successfully. Please, verify your email to activate your account.",
-                user: newUser,
+                msg: "Usuario creado satisfacotriamente. Por favor verificar su email",
+                newUser,
+                success: true
             };
             //enviar email para verificacion de cuenta con Nodemailer y Handlebars
         }
@@ -80,7 +78,8 @@ const loginUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
         });
         if (!foundUser) {
             return {
-                msg: "User not found...",
+                msg: "Usuario no encontrado...",
+                success: false
             };
         }
         const foundPassword = yield Password.findOne({
@@ -88,13 +87,15 @@ const loginUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
         });
         if (!foundPassword) {
             return {
-                msg: "Password not registered to this user...",
+                msg: "El password no ha sido asignado a este usuario...",
+                success: false
             };
         }
         const isPasswordMatch = yield bcrypt_1.default.compare(user.password, foundPassword.dataValues.password);
         if (!isPasswordMatch) {
             return {
-                msg: "Authentication failed. Incorrect password.",
+                msg: "Clave incorrecta...",
+                success: false
             };
         }
         const token = jsonwebtoken_1.default.sign({
@@ -106,9 +107,10 @@ const loginUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
             expiresIn: "30d",
         });
         return {
-            msg: "User logged succesfully...",
+            msg: "Usuario logueado satisfactoriamente...",
             token,
-            user: foundUser
+            user: foundUser,
+            success: true
         };
     }
     catch (e) {
@@ -134,12 +136,14 @@ const getUserServ = (user, token) => __awaiter(void 0, void 0, void 0, function*
         });
         if (!user) {
             return {
-                msg: "This user doesn't exist",
+                msg: "Este usuario no existe",
+                success: false
             };
         }
         return {
             user: findUser,
-            token
+            token,
+            succes: true
         };
     }
     catch (e) {
