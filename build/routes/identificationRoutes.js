@@ -5,7 +5,7 @@ const identification_controllers_1 = require("../controllers/identification.cont
 const authjwt_1 = require("../middleware/authjwt");
 const router = (0, express_1.Router)();
 // Register identification
-router.post("/create", authjwt_1.verifyToken, authjwt_1.isSuperUser, identification_controllers_1.createIdentification);
+router.post("/create", /*verifyToken*/ /*isSuperUser*/ identification_controllers_1.createIdentification);
 // Get identification
 router.get("/get-identifications", identification_controllers_1.getIdentifications);
 // Update identification

@@ -43,8 +43,7 @@ app.use("/api/v1/password", passwordRoutes);
 //   });
 // });
 
-// console.log(sequelize.models);
 app.listen(port, () => {
   console.log('Server run on Port =>  ' + port)
-  sequelize.sync({ alter: true })
+  sequelize.sync({ force: true })
 })
