@@ -10,7 +10,7 @@ import { verifyToken, isSuperUser } from "../middleware/authjwt";
 const router = Router();
 
 // Register role
-router.post("/create", verifyToken, isSuperUser, createRole);
+router.post("/create", /**verifyToken*/ /*isSuperUser*/ createRole);
 
 // Get roles
 router.get("/get-roles", getRoles);
