@@ -21,6 +21,7 @@ class User extends Model<UserAttributes> implements UserAttributes {
   phone!: string;
   status!: boolean;
 
+  
   // Function to get the default status value
   public setDefaultStatus(): void {
     if (!this.userName) {

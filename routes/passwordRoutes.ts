@@ -11,4 +11,3 @@ router.post("/create", verifyToken, createPassword);
 
 //(Ingresa la vieja clave e ingresa la nueva?)
 export default router;
-
