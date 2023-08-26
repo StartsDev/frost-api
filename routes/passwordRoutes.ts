@@ -5,7 +5,8 @@ import { verifyToken, isSuperUser } from '../middleware/authjwt';
 const router = Router();
 
 // Register new password
-router.post("/create", verifyToken, createPassword);
+// router.post("/create", verifyToken, createPassword);
+router.post("/create", createPassword);
 
 // Update password
 
