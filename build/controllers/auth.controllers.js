@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserInfo = exports.loginUser = exports.createUser = void 0;
+exports.bulkCreateController = exports.getUserInfo = exports.loginUser = exports.createUser = void 0;
 const auth_services_1 = require("../services/auth.services");
 //Register new user
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -22,6 +22,21 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.createUser = createUser;
+const bulkCreateController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const data = yield (0, auth_services_1.bulkCreateUser)(req.body);
+        res.status(200).json(data);
+    }
+    catch (e) {
+        console.log(e);
+        res.status(400).json({
+            message: 'hubo un error',
+            success: false,
+            error: e
+        });
+    }
+});
+exports.bulkCreateController = bulkCreateController;
 //Login user
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -30,6 +45,11 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (e) {
         console.log(e);
+        res.status(400).json({
+            message: 'hubo un error',
+            success: false,
+            error: e
+        });
     }
 });
 exports.loginUser = loginUser;
@@ -41,6 +61,11 @@ const getUserInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (e) {
         console.log(e);
+        res.status(400).json({
+            message: 'hubo un error',
+            success: false,
+            error: e
+        });
     }
 });
 exports.getUserInfo = getUserInfo;

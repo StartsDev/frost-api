@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createUser, loginUser, getUserInfo } from "../controllers/auth.controllers";
+import { createUser, loginUser, getUserInfo, bulkCreateController } from "../controllers/auth.controllers";
 import { verifyToken } from '../middleware/authjwt';
 
 
@@ -8,6 +8,9 @@ const router = Router();
 
 // Register new user
 router.post("/register", createUser);
+
+//bulkCreate
+router.post("/bulk-create", bulkCreateController);
 
 // Login user
 router.post("/login", loginUser);

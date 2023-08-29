@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 const { Op } = require("sequelize");
 import bcrypt from "bcrypt";
 import { UserAttributes } from "../interfaces/auth.interface";
+import { bulkCreatefunction } from "../utils/bulkCreate";
 const Password = require("../models/password");
 const User = require("../models/user");
 const Role = require("../models/role");
@@ -149,4 +150,17 @@ const getUserServ = async (user: any, token: any) => {
   }
 };
 
-export { registerUser, loginUserServ, getUserServ };
+const bulkCreateUser = async (data: Array<{}>) => {
+    try {
+      await bulkCreatefunction(User, data)
+      return 'Usuarios Creados'
+    } catch (error) {
+      console.log(error);
+      return {
+        message: 'hubo un error en la creacion',
+        success: false,
+    }
+  }
+}
+
+export { registerUser, loginUserServ, getUserServ, bulkCreateUser };

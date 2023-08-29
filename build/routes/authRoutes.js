@@ -7,6 +7,8 @@ const router = (0, express_1.Router)();
 //Auth
 // Register new user
 router.post("/register", auth_controllers_1.createUser);
+//bulkCreate
+router.post("/bulk-create", auth_controllers_1.bulkCreateController);
 // Login user
 router.post("/login", auth_controllers_1.loginUser);
 // Get user info (Home page)
