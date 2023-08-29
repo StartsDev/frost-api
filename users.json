@@ -1,0 +1,62 @@
+[
+  {
+  "numIdent":"12345",
+  "firstName":"Ramiro",
+  "lastName": "Grisales",
+  "email":"ramirogrisales@gmail.com",
+  "phone":"123123123",
+  "identId":"4d93477d-a652-48e1-be7f-856149e3b3e3",
+  "roleId":"4399a17b-9c3d-48d4-9a06-cc54bd047fb3",
+  "userName": "ramiro.grisales"
+ },
+ {
+  "numIdent":"67890",
+  "firstName":"krilin",
+  "lastName": "fernandez",
+  "email":"ramirogrisales@gmail.com",
+  "phone":"123123123",
+  "identId":"4d93477d-a652-48e1-be7f-856149e3b3e3",
+  "roleId":"4399a17b-9c3d-48d4-9a06-cc54bd047fb3",
+  "userName": "krilin.fernandez"
+},
+{
+  "numIdent":"111222",
+  "firstName":"goku",
+  "lastName": "jose",
+  "email":"ramirogrisales@gmail.com",
+  "phone":"123123123",
+  "identId":"4d93477d-a652-48e1-be7f-856149e3b3e3",
+  "roleId":"4399a17b-9c3d-48d4-9a06-cc54bd047fb3",
+  "userName": "goku.jose"
+},
+{
+  "numIdent":"222333",
+  "firstName":"bulma",
+  "lastName": "gutierrez",
+  "email":"ramirogrisales@gmail.com",
+  "phone":"123123123",
+  "identId":"4d93477d-a652-48e1-be7f-856149e3b3e3",
+  "roleId":"4227869c-31d5-4e65-8e60-6033bd0961cf",
+  "userName": "bulma.gutierrez"
+},
+{
+  "numIdent":"333444",
+  "firstName":"gohan",
+  "lastName": "martinez",
+  "email":"ramirogrisales@gmail.com",
+  "phone":"123123123",
+  "identId":"4d93477d-a652-48e1-be7f-856149e3b3e3",
+  "roleId":"4227869c-31d5-4e65-8e60-6033bd0961cf",
+  "userName": "gohan.martinez"
+},
+{
+  "numIdent":"444555",
+  "firstName":"trunks",
+  "lastName": "gonzalez",
+  "email":"ramirogrisales@gmail.com",
+  "phone":"123123123",
+  "identId":"4d93477d-a652-48e1-be7f-856149e3b3e3",
+  "roleId":"4227869c-31d5-4e65-8e60-6033bd0961cf",
+  "userName": "trunks.gonzales"
+}
+]

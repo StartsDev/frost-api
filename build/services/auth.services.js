@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserServ = exports.loginUserServ = exports.registerUser = void 0;
+exports.bulkCreateUser = exports.getUserServ = exports.loginUserServ = exports.registerUser = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const { Op } = require("sequelize");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const bulkCreate_1 = require("../utils/bulkCreate");
 const Password = require("../models/password");
 const User = require("../models/user");
 const Role = require("../models/role");
@@ -151,3 +152,17 @@ const getUserServ = (user, token) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getUserServ = getUserServ;
+const bulkCreateUser = (data) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield (0, bulkCreate_1.bulkCreatefunction)(User, data);
+        return 'Usuarios Creados';
+    }
+    catch (error) {
+        console.log(error);
+        return {
+            message: 'hubo un error en la creacion',
+            success: false,
+        };
+    }
+});
+exports.bulkCreateUser = bulkCreateUser;
