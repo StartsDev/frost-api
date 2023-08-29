@@ -8,4 +8,5 @@ export interface UserAttributes {
     email: string;
     phone: string;
     status: boolean;
+    clientId : string;
   }
