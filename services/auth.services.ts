@@ -7,6 +7,7 @@ const Password = require("../models/password");
 const User = require("../models/user");
 const Role = require("../models/role");
 const Identification = require("../models/identification");
+const {configParams} = require('../config')
 
 require("dotenv").config();
 
@@ -101,7 +102,7 @@ const loginUserServ = async (user: any) => {
         lastName: foundUser.lastName,
         email: foundUser.email,
       },
-      secretKey as string,
+      configParams.SECRET_JWT as string,
       {
         expiresIn: "30d",
       }
@@ -152,7 +153,7 @@ const getUserServ = async (user: any, token: any) => {
 
 const bulkCreateUser = async (data: Array<{}>) => {
     try {
-      await bulkCreatefunction(User, data)
+    await bulkCreatefunction(User, data)
       return 'Usuarios Creados'
     } catch (error) {
       console.log(error);

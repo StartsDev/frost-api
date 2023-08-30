@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 const jwt = require("jsonwebtoken");
 import { getUserServ } from "../services/user.services";
+const {configParams} = require('../config')
 
 require("dotenv").config();
 
@@ -36,7 +37,8 @@ export const verifyToken = async (
     }
 
     // Verificamos y decodificamos el token
-    jwt.verify(tokenArray, secretKey, (err: any, decoded: DecodedToken) => {
+    // jwt.verify(tokenArray, secretKey, (err: any, decoded: DecodedToken) => {
+    jwt.verify(tokenArray, configParams.SECRET_JWT, (err: any, decoded: DecodedToken) => {
       if (err) {
         return res.status(403).json({ mensaje: "Invalid Token" });
       }

@@ -7,6 +7,7 @@
 // const config = require(__dirname + "/../config/config.js")[env];
 // const db:any = {};
 import dotenv from 'dotenv';
+const {configParams} = require('../config')
 dotenv.config();
 const {DB_USER, DB_NAME, DB_PASS, DB_HOST, DATABASE_URL} = process.env
 
@@ -39,16 +40,17 @@ const { Sequelize, DataTypes, Op } = require('sequelize')
 // });
 
 //para uso desplegado
-const sequelize = new Sequelize(DATABASE_URL, {
+// const sequelize = new Sequelize(DATABASE_URL, {
+const sequelize = new Sequelize(configParams.DATABASE_URL, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
   // esta configuraion es por si es requerido por webserver desplegado, local no es necesario
-   dialectOptions:{
-    ssl: {
-      require : true,
-      rejectUnauthorized: false
-    }
-  } 
+  //  dialectOptions:{
+  //   ssl: {
+  //     require : true,
+  //     rejectUnauthorized: false
+  //   }
+  // } 
 });
 
 // fs.readdirSync(__dirname)
