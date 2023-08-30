@@ -12,6 +12,7 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 8000;
+const PORTTEST = process.env.PORT
 
 // import { users } from "./seeders/users";
 // Seeders Users
@@ -45,5 +46,6 @@ app.use("/api/v1/password", passwordRoutes);
 
 app.listen(port, () => {
   console.log('Server run on Port =>  ' + 8000)
+  console.log('PuertoTEST', PORTTEST);
   sequelize.sync({ alter: true })
 })
