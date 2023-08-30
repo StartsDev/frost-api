@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.isSuperUser = exports.isSuperUser_isAdmin = exports.verifyToken = void 0;
 const jwt = require("jsonwebtoken");
 const user_services_1 = require("../services/user.services");
+const { configParams } = require('../config');
 require("dotenv").config();
 const secretKey = process.env.SECRET_JWT;
 const super_user = process.env.SUPER_USER;
@@ -25,7 +26,8 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             return res.status(403).json({ message: "No token delivered" });
         }
         // Verificamos y decodificamos el token
-        jwt.verify(tokenArray, secretKey, (err, decoded) => {
+        // jwt.verify(tokenArray, secretKey, (err: any, decoded: DecodedToken) => {
+        jwt.verify(tokenArray, configParams.SECRET_JWT, (err, decoded) => {
             if (err) {
                 return res.status(403).json({ mensaje: "Invalid Token" });
             }
@@ -47,8 +49,8 @@ const isSuperUser_isAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0
     try {
         const id = (_a = req.decoded) === null || _a === void 0 ? void 0 : _a.userId;
         const user = yield (0, user_services_1.getUserServ)(id);
-        if (user.findUser.dataValues.Role.dataValues.role !== super_user &&
-            user.findUser.dataValues.Role.dataValues.role !== admin)
+        if (user.findUser.dataValues.Role.dataValues.role !== configParams.SUPER_USER &&
+            user.findUser.dataValues.Role.dataValues.role !== configParams.ADMIN)
             return res.status(401).json({
                 message: "El rol de usuario no es super usuario o administrador",
             });
@@ -64,7 +66,7 @@ const isSuperUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     try {
         const id = (_b = req.decoded) === null || _b === void 0 ? void 0 : _b.userId;
         const user = yield (0, user_services_1.getUserServ)(id);
-        if (user.findUser.dataValues.Role.dataValues.role !== super_user)
+        if (user.findUser.dataValues.Role.dataValues.role !== configParams.SUPER_USER)
             return res
                 .status(401)
                 .json({ message: "El rol de usuario no es super usuario" });

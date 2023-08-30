@@ -64,8 +64,8 @@ export const isSuperUser_isAdmin = async (
     const id = req.decoded?.userId;
     const user = await getUserServ(id);
     if (
-      user.findUser.dataValues.Role.dataValues.role !== super_user &&
-      user.findUser.dataValues.Role.dataValues.role !== admin
+      user.findUser.dataValues.Role.dataValues.role !== configParams.SUPER_USER &&
+      user.findUser.dataValues.Role.dataValues.role !== configParams.ADMIN
     )
       return res.status(401).json({
         message: "El rol de usuario no es super usuario o administrador",
@@ -84,7 +84,7 @@ export const isSuperUser = async (
   try {
     const id = req.decoded?.userId;
     const user = await getUserServ(id);
-    if (user.findUser.dataValues.Role.dataValues.role !== super_user)
+    if (user.findUser.dataValues.Role.dataValues.role !== configParams.SUPER_USER)
       return res
         .status(401)
         .json({ message: "El rol de usuario no es super usuario" });

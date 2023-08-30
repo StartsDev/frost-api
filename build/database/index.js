@@ -1,9 +1,7 @@
 "use strict";
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // const fs = require("fs");
 // const path = require("path");
@@ -13,9 +11,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // const config = require(__dirname + "/../config/config.js")[env];
 // const db:any = {};
 const dotenv_1 = __importDefault(require("dotenv"));
+const { configParams } = require('../config');
 dotenv_1.default.config();
 const { DB_USER, DB_NAME, DB_PASS, DB_HOST, DATABASE_URL } = process.env;
-const { Sequelize, DataTypes, Op } = require("sequelize");
+const { Sequelize, DataTypes, Op } = require('sequelize');
 // let sequelize: any;
 // if (config.use_env_variable) {
 //   sequelize = new Sequelize(process.env[config.use_env_variable], config);
@@ -41,20 +40,17 @@ const { Sequelize, DataTypes, Op } = require("sequelize");
 // });
 //para uso desplegado
 // const sequelize = new Sequelize(DATABASE_URL, {
-const sequelize = new Sequelize(
-  "postgres://postgres:2004243001@localhost/authentication",
-  {
+const sequelize = new Sequelize(configParams.DATABASE_URL, {
     logging: false,
-    native: false,
+    native: false, // lets Sequelize know we can use pg-native for ~30% more speed
     // esta configuraion es por si es requerido por webserver desplegado, local no es necesario
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
-  }
-);
+    //  dialectOptions:{
+    //   ssl: {
+    //     require : true,
+    //     rejectUnauthorized: false
+    //   }
+    // } 
+});
 // fs.readdirSync(__dirname)
 //   .filter((file: string) => {
 //     return (
@@ -80,8 +76,7 @@ const sequelize = new Sequelize(
 // db.sequelize = sequelize;
 // db.Sequelize = Sequelize;
 // console.log(db);
-sequelize
-  .authenticate()
-  .then(() => console.log("Postgres database connected"))
-  .catch((error) => console.log("Something goes wrong " + error.message));
+sequelize.authenticate()
+    .then(() => console.log('Postgres database connected'))
+    .catch((error) => console.log('Something goes wrong ' + error.message));
 module.exports = { sequelize, DataTypes, Op };

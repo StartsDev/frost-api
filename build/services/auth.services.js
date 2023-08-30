@@ -21,6 +21,7 @@ const Password = require("../models/password");
 const User = require("../models/user");
 const Role = require("../models/role");
 const Identification = require("../models/identification");
+const { configParams } = require('../config');
 require("dotenv").config();
 const secretKey = process.env.SECRET_JWT;
 const registerUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
@@ -104,7 +105,7 @@ const loginUserServ = (user) => __awaiter(void 0, void 0, void 0, function* () {
             firstName: foundUser.firstName,
             lastName: foundUser.lastName,
             email: foundUser.email,
-        }, secretKey, {
+        }, configParams.SECRET_JWT, {
             expiresIn: "30d",
         });
         return {
