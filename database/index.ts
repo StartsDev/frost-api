@@ -46,12 +46,12 @@ const sequelize = new Sequelize('ep-flat-cherry-01647908.ap-southeast-1.aws.neon
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
   // esta configuraion es por si es requerido por webserver desplegado, local no es necesario
-  //  dialectOptions:{
-  //   ssl: {
-  //     require : true,
-  //     rejectUnauthorized: false
-  //   }
-  // } 
+   dialectOptions:{
+    ssl: {
+      require : true,
+      rejectUnauthorized: false
+    }
+  } 
 });
 
 // fs.readdirSync(__dirname)
