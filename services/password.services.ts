@@ -5,7 +5,7 @@ const User = require("../models/user");
 const Identification = require("../models/identification");
 const path = require('path');
 const hbs = require('nodemailer-express-handlebars');
-const transporter = require('../mailer/mailer');
+// const transporter = require('../mailer/mailer');
 require('dotenv').config();
 
 const saltRounds = 10; // Number of salt rounds for bcrypt
@@ -105,22 +105,22 @@ const forgotPasswordsServ = async (email:any, res:any) => {
           extName: ".handlebars",
       }
 
-      transporter.use('compile', hbs(handlebarOptions))
+      // transporter.use('compile', hbs(handlebarOptions))
 
-      await transporter.sendMail({
-          from: `'"Admon Aires 👻" <${process.env.EMAIL_ACCOUNT}>'`, // sender address
-          to: user.email, // list of receivers
-          subject: "Notificación cambio de contraseña ✔", // Subject line
-          /*  html: `<b>Por favor da click en este enlace o pegalo en tu navegador para completar el proceso:</b>
-           <a href="${verificationLink}">${verificationLink}</a>`, // html body */
-          template: 'email',
-          context: {
-              title: 'Notificación cambio de contraseña',
-              text: 'Por favor da click en este enlace o pegalo en tu navegador para completar el proceso:',
-              verificationLink: verificationLink,
-              textFoot:'Por favor comunicarse con soporte de Aires si tiene algun problema'
-          }
-      });
+      // await transporter.sendMail({
+      //     from: `'"Admon Aires 👻" <${process.env.EMAIL_ACCOUNT}>'`, // sender address
+      //     to: user.email, // list of receivers
+      //     subject: "Notificación cambio de contraseña ✔", // Subject line
+      //     /*  html: `<b>Por favor da click en este enlace o pegalo en tu navegador para completar el proceso:</b>
+      //      <a href="${verificationLink}">${verificationLink}</a>`, // html body */
+      //     template: 'email',
+      //     context: {
+      //         title: 'Notificación cambio de contraseña',
+      //         text: 'Por favor da click en este enlace o pegalo en tu navegador para completar el proceso:',
+      //         verificationLink: verificationLink,
+      //         textFoot:'Por favor comunicarse con soporte de Aires si tiene algun problema'
+      //     }
+      // });
   } catch (error) {
       return {
           message: "El email no pudo ser enviado",
