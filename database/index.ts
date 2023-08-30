@@ -41,7 +41,8 @@ const { Sequelize, DataTypes, Op } = require('sequelize')
 
 //para uso desplegado
 // const sequelize = new Sequelize(DATABASE_URL, {
-const sequelize = new Sequelize('postgres://postgres:2004243001@localhost:5432/authentication', {
+// const sequelize = new Sequelize('postgres://postgres:2004243001@localhost:5432/authentication', {
+const sequelize = new Sequelize('ep-flat-cherry-01647908.ap-southeast-1.aws.neon.tech:5432/frost', {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
   // esta configuraion es por si es requerido por webserver desplegado, local no es necesario
