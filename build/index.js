@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const { sequelize } = require('./database/index');
+const fileUpload = require('express-fileupload');
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
@@ -27,6 +28,11 @@ const port = process.env.PORT || 8000;
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)());
+app.use(fileUpload({
+    useTempFiles: true,
+    tempFileDir: '/tmp/',
+    createParentPath: true
+}));
 app.use((0, morgan_1.default)("tiny"));
 //User Routes
 app.use("/api/v1/auth", authRoutes_1.default);

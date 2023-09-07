@@ -13,6 +13,7 @@ interface DecodedToken {
   userId: string;
   firstName: string;
   lastName: string;
+  numIdent : string;
   email: string;
 }
 

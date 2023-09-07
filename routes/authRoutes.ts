@@ -18,8 +18,4 @@ router.post("/login", loginUser);
 // Get user info (Home page)
 router.get("/get-user-info", verifyToken, getUserInfo);
 
-// Reset password
-
-// Update password
-
 export default router;

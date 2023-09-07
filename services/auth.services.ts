@@ -10,7 +10,6 @@ const Identification = require("../models/identification");
 
 require("dotenv").config();
 
-
 const secretKey = process.env.SECRET_JWT;
 
 const registerUser = async (user: UserAttributes) => {
@@ -94,11 +93,13 @@ const loginUserServ = async (user: any) => {
         success: false
       };
     }
+
     const token = jwt.sign(
       {
         userId: foundUser.id,
         firstName: foundUser.firstName,
         lastName: foundUser.lastName,
+        numIdent : foundUser.numIdent,
         email: foundUser.email,
       },
       secretKey as string,
@@ -162,5 +163,7 @@ const bulkCreateUser = async (data: Array<{}>) => {
     }
   }
 }
+
+
 
 export { registerUser, loginUserServ, getUserServ, bulkCreateUser };

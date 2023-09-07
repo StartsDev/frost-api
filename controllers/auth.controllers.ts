@@ -57,4 +57,6 @@ const getUserInfo = async (req: CustomRequest, res: Response) => {
   }
 };
 
+
+
 export { createUser, loginUser, getUserInfo, bulkCreateController };

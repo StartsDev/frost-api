@@ -20,7 +20,8 @@ class User extends Model<UserAttributes> implements UserAttributes {
   email!: string;
   phone!: string;
   status!: boolean;
-  clientId!:string;
+  clientId!: string;
+  resetToken!: string;
 
   
   // Function to get the default status value
@@ -82,6 +83,7 @@ User.init(
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true
     },
     phone: {
       type: DataTypes.STRING,
@@ -94,6 +96,10 @@ User.init(
     clientId: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    resetToken: {
+      type: DataTypes.TEXT,
+      defaultValue: null
     },
   },
   {

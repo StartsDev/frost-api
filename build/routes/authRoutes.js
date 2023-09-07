@@ -13,6 +13,4 @@ router.post("/bulk-create", auth_controllers_1.bulkCreateController);
 router.post("/login", auth_controllers_1.loginUser);
 // Get user info (Home page)
 router.get("/get-user-info", authjwt_1.verifyToken, auth_controllers_1.getUserInfo);
-// Reset password
-// Update password
 exports.default = router;

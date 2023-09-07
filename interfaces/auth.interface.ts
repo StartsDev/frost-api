@@ -9,4 +9,5 @@ export interface UserAttributes {
     phone: string;
     status: boolean;
     clientId : string;
+    resetToken : string;
   }

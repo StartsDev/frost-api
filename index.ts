@@ -1,4 +1,5 @@
 const {sequelize} = require('./database/index')
+const fileUpload = require('express-fileupload')
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
@@ -26,6 +27,11 @@ const port = process.env.PORT || 8000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(fileUpload({
+  useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath: true
+}));
 app.use(morgan("tiny"));
 
 //User Routes

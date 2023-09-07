@@ -1,14 +1,19 @@
 import { Router } from "express";
-import { createPassword } from "../controllers/password.controller";
+import { createPassword, forgotPassword, VerifyRToken, newPassword } from "../controllers/password.controller";
 import { verifyToken, isSuperUser } from '../middleware/authjwt';
 
 const router = Router();
 
 // Register new password
-// router.post("/create", verifyToken, createPassword);
 router.post("/create", createPassword);
 
-// Update password
+// Reset password
+router.post('/reset-password',verifyToken, isSuperUser, forgotPassword);
 
-//(Ingresa la vieja clave e ingresa la nueva?)
+// Verify reset-token
+router.post('/verify-reset-token/:token',verifyToken, isSuperUser, VerifyRToken);
+
+// New password
+router.patch('/update-password', verifyToken, isSuperUser, newPassword);
+
 export default router;
