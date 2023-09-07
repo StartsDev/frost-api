@@ -16,7 +16,6 @@ exports.createNewPasswordServ = exports.verifyResetToken = exports.forgotPasswor
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
-;
 const Password = require("../models/password");
 const User = require("../models/user");
 const Identification = require("../models/identification");
@@ -103,7 +102,8 @@ const forgotPasswordsServ = (email) => __awaiter(void 0, void 0, void 0, functio
         }, process.env.JWT_SECRET_RESET, {
             expiresIn: "30m",
         });
-        const verificationLink = `${process.env.FRONTEND_URL_LOCAL}/password/new-password/${uuid}`;
+        const URL = process.env.FRONTEND_URL_DEPLOYED || process.env.FRONTEND_URL_LOCAL;
+        const verificationLink = `${URL}/password/new-password/${uuid}`;
         const updateUser = yield User.update({ resetToken: token }, {
             where: {
                 numIdent: plainUser.numIdent,
@@ -173,7 +173,7 @@ const verifyResetToken = (token) => __awaiter(void 0, void 0, void 0, function* 
         if (!decoded) {
             return {
                 msg: "El token no es válido o ha caducado...",
-                success: false
+                success: false,
             };
         }
         return {

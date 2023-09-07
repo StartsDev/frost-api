@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
-;const Password = require("../models/password");
+const Password = require("../models/password");
 const User = require("../models/user");
 const Identification = require("../models/identification");
 const path = require("path");
@@ -95,7 +95,9 @@ const forgotPasswordsServ = async (email: any) => {
         expiresIn: "30m",
       }
     );
-    const verificationLink = `${process.env.FRONTEND_URL_LOCAL}/password/new-password/${uuid}`;
+    const URL =
+      process.env.FRONTEND_URL_DEPLOYED || process.env.FRONTEND_URL_LOCAL;
+    const verificationLink = `${URL}/password/new-password/${uuid}`;
     const updateUser = await User.update(
       { resetToken: token },
       {
@@ -171,11 +173,11 @@ const verifyResetToken = async (token: any) => {
   try {
     // Verificamos el reset token
     const decoded = jwt.verify(token, process.env.JWT_SECRET_RESET);
-    if(!decoded){
+    if (!decoded) {
       return {
-        msg :"El token no es válido o ha caducado...",
-        success:false
-      }
+        msg: "El token no es válido o ha caducado...",
+        success: false,
+      };
     }
     return {
       message: "Token válido. Puedes restablecer tu contraseña...",
