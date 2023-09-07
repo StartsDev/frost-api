@@ -5,7 +5,7 @@ const { uploadImageCloud } = require("../utils/cloudinary");
 
 const upImgEquip = async (req: any, res: Response) => {
   try {
-    const { tempFilePath } = req.files.picture;
+    const { tempFilePath } = req.files.image;
     const { id } = req.params;
     const secure_url = await uploadImageCloud(tempFilePath);
     const response = await uploadAvatarServ(secure_url, id);
@@ -14,5 +14,6 @@ const upImgEquip = async (req: any, res: Response) => {
     if (error instanceof Error) res.status(400).json({ error: error.message });
   }
 };
+
 
 export { upImgEquip };

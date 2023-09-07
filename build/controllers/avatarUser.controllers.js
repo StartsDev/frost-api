@@ -14,7 +14,7 @@ const avatar_service_1 = require("../services/avatar.service");
 const { uploadImageCloud } = require("../utils/cloudinary");
 const upImgEquip = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { tempFilePath } = req.files.picture;
+        const { tempFilePath } = req.files.image;
         const { id } = req.params;
         const secure_url = yield uploadImageCloud(tempFilePath);
         const response = yield (0, avatar_service_1.uploadAvatarServ)(secure_url, id);
