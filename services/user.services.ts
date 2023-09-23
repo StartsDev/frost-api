@@ -253,10 +253,84 @@ const deleteUserServ = async (id: any) => {
   }
 };
 
+//Tech
+const allTechServ = async (page?: number, pageSize?: number) => {
+  try {
+    let users;
+    if (page && pageSize) {
+      const offset = (page - 1) * pageSize;
+      users = await User.findAll({
+        offset,
+        limit: pageSize,
+        where: { status: false },
+        attributes: { exclude: ["updatedAt"] },
+        order: [["createdAt", "DESC"]],
+        include: [
+          {
+            model: Identification,
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          },
+          {
+            model: Role,
+            where: { role: "Tecnico", status: false },
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          },
+        ],
+      });
+
+      if (!users) {
+        return {
+          msg: "No existen usuarios registrados...",
+          users,
+          success: false,
+        };
+      }
+      const totalCount = await User.count({ where: { status: false } });
+      return {
+        users,
+        totalCount,
+        success: true,
+      };
+    } else {
+      users = await User.findAll({
+        where: { status: false },
+        attributes: { exclude: ["updatedAt"] },
+        order: [["createdAt", "DESC"]],
+        include: [
+          {
+            model: Identification,
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          },
+          {
+            model: Role,
+            attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+          },
+        ],
+      });
+
+      if (!users) {
+        return {
+          msg: "No existen usuarios registrados...",
+          users,
+          success: false,
+        };
+      }
+      const totalCount = await User.count({ where: { status: false } });
+      return {
+        users,
+        totalCount,
+        success: true,
+      };
+    }
+  } catch (e) {
+    throw new Error(e as string);
+  }
+};
 export {
   allUsers,
   getUserServ,
   allUserRolServ,
   updateUserServ,
   deleteUserServ,
+  allTechServ
 };

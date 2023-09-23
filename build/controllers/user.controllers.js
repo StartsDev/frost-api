@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.editUser = exports.getUsersRol = exports.getUser = exports.getUsers = void 0;
+exports.getAllTech = exports.deleteUser = exports.editUser = exports.getUsersRol = exports.getUser = exports.getUsers = void 0;
 const user_services_1 = require("../services/user.services");
 // Get all users
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -106,3 +106,34 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteUser = deleteUser;
+//Get all tech
+const getAllTech = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const page = parseInt(req.query.page) || undefined; // Get the requested page from query parameter
+        const pageSize = parseInt(req.query.pageSize) || undefined; // Get the requested page size from query parameter
+        const { users, totalCount } = yield (0, user_services_1.allTechServ)(page, pageSize);
+        if (!page && !pageSize) {
+            res.status(200).json({
+                users,
+                numItmes: totalCount,
+            });
+        }
+        else {
+            const totalPages = Math.ceil(totalCount / (pageSize !== null && pageSize !== void 0 ? pageSize : totalCount));
+            res.status(200).json({
+                users,
+                numItmes: totalCount,
+                currentPage: page,
+                totalPages,
+            });
+        }
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).json({ error: error.message });
+        res.status(400).json({
+            msg: "Error",
+        });
+    }
+});
+exports.getAllTech = getAllTech;

@@ -9,11 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.upImgEquip = void 0;
+exports.upImgAvatar = void 0;
 const avatar_service_1 = require("../services/avatar.service");
 const { uploadImageCloud } = require("../utils/cloudinary");
-const upImgEquip = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const upImgAvatar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        if (!req.files.image) {
+            res.status(400).json({ msg: "Cargue una imagen...", success: false });
+        }
         const { tempFilePath } = req.files.image;
         const { id } = req.params;
         const secure_url = yield uploadImageCloud(tempFilePath);
@@ -25,4 +28,4 @@ const upImgEquip = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             res.status(400).json({ error: error.message });
     }
 });
-exports.upImgEquip = upImgEquip;
+exports.upImgAvatar = upImgAvatar;

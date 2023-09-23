@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserServ = exports.updateUserServ = exports.allUserRolServ = exports.getUserServ = exports.allUsers = void 0;
+exports.allTechServ = exports.deleteUserServ = exports.updateUserServ = exports.allUserRolServ = exports.getUserServ = exports.allUsers = void 0;
 const users_1 = require("./../seeders/users");
 const User = require("../models/user");
 const Identification = require("../models/identification");
@@ -257,3 +257,77 @@ const deleteUserServ = (id) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.deleteUserServ = deleteUserServ;
+//Tech
+const allTechServ = (page, pageSize) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let users;
+        if (page && pageSize) {
+            const offset = (page - 1) * pageSize;
+            users = yield User.findAll({
+                offset,
+                limit: pageSize,
+                where: { status: false },
+                attributes: { exclude: ["updatedAt"] },
+                order: [["createdAt", "DESC"]],
+                include: [
+                    {
+                        model: Identification,
+                        attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+                    },
+                    {
+                        model: Role,
+                        where: { role: "Tecnico", status: false },
+                        attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+                    },
+                ],
+            });
+            if (!users) {
+                return {
+                    msg: "No existen usuarios registrados...",
+                    users,
+                    success: false,
+                };
+            }
+            const totalCount = yield User.count({ where: { status: false } });
+            return {
+                users,
+                totalCount,
+                success: true,
+            };
+        }
+        else {
+            users = yield User.findAll({
+                where: { status: false },
+                attributes: { exclude: ["updatedAt"] },
+                order: [["createdAt", "DESC"]],
+                include: [
+                    {
+                        model: Identification,
+                        attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+                    },
+                    {
+                        model: Role,
+                        attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+                    },
+                ],
+            });
+            if (!users) {
+                return {
+                    msg: "No existen usuarios registrados...",
+                    users,
+                    success: false,
+                };
+            }
+            const totalCount = yield User.count({ where: { status: false } });
+            return {
+                users,
+                totalCount,
+                success: true,
+            };
+        }
+    }
+    catch (e) {
+        throw new Error(e);
+    }
+});
+exports.allTechServ = allTechServ;

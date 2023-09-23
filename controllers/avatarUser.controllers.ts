@@ -3,8 +3,11 @@ import { uploadAvatarServ } from "../services/avatar.service";
 
 const { uploadImageCloud } = require("../utils/cloudinary");
 
-const upImgEquip = async (req: any, res: Response) => {
+const upImgAvatar = async (req: any, res: Response) => {
   try {
+    if (!req.files.image) {
+      res.status(400).json({ msg: "Cargue una imagen...", success: false });
+    }
     const { tempFilePath } = req.files.image;
     const { id } = req.params;
     const secure_url = await uploadImageCloud(tempFilePath);
@@ -15,5 +18,4 @@ const upImgEquip = async (req: any, res: Response) => {
   }
 };
 
-
-export { upImgEquip };
+export { upImgAvatar };
