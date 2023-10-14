@@ -14,7 +14,7 @@ const User = require("../models/user");
 const uploadAvatarServ = (image, id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const findUser = yield User.findOne({
-            where: { id: id }
+            where: { id }
         });
         if (!findUser) {
             return {

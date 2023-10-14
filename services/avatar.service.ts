@@ -3,7 +3,7 @@ const User= require("../models/user");
 const uploadAvatarServ = async(image:string, id:string)=>{
     try {
        const findUser = await User.findOne({
-        where:{id:id}
+        where:{id}
        })
        if(!findUser){
         return{
