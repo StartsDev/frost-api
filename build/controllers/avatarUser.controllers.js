@@ -20,6 +20,9 @@ const upImgAvatar = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const { tempFilePath } = req.files.image;
         const { id } = req.params;
         const secure_url = yield uploadImageCloud(tempFilePath);
+        if (!secure_url) {
+            res.status(400).json("No fue posible subir la imagen...");
+        }
         const response = yield (0, avatar_service_1.uploadAvatarServ)(secure_url, id);
         res.status(200).json(response);
     }

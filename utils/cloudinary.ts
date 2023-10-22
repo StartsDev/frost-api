@@ -10,10 +10,14 @@ cloudinary.config({
 });
 
 const uploadImageCloud = async (filePath: any) => {
-  const { secure_url } = await cloudinary.uploader.upload(filePath, {
-    folder: "aires",
-  });
-  return secure_url;
+  try {
+    const { secure_url } = await cloudinary.uploader.upload(filePath, {
+      folder: "aires",
+    });
+    return secure_url;
+  } catch (error) {
+    console.error(error)
+  }
 };
 
 const deleteImage = async (publicId: any) => {

@@ -22,10 +22,15 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 const uploadImageCloud = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
-    const { secure_url } = yield cloudinary.uploader.upload(filePath, {
-        folder: "aires",
-    });
-    return secure_url;
+    try {
+        const { secure_url } = yield cloudinary.uploader.upload(filePath, {
+            folder: "aires",
+        });
+        return secure_url;
+    }
+    catch (error) {
+        console.error(error);
+    }
 });
 const deleteImage = (publicId) => __awaiter(void 0, void 0, void 0, function* () {
     return yield cloudinary.uploader.destroy(publicId);

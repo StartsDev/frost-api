@@ -11,6 +11,9 @@ const upImgAvatar = async (req: any, res: Response) => {
     const { tempFilePath } = req.files.image;
     const { id } = req.params;
     const secure_url = await uploadImageCloud(tempFilePath);
+    if(!secure_url){
+      res.status(400).json("No fue posible subir la imagen...");
+    }
     const response = await uploadAvatarServ(secure_url, id);
     res.status(200).json(response);
   } catch (error) {

@@ -11,6 +11,7 @@ const uploadAvatarServ = async(image:string, id:string)=>{
             success:false
         }
        }
+       
        const updateUser = await User.update({image},{
         where:{id}
        })

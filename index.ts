@@ -1,4 +1,4 @@
-const {sequelize} = require('./database/index')
+const { sequelize } = require('./database/index')
 const fileUpload = require('express-fileupload')
 import express from "express";
 import cors from "cors";
@@ -24,13 +24,13 @@ const port = process.env.PORT || 8000;
 
 // createUsers();
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(fileUpload({
-  useTempFiles : true,
-            tempFileDir : '/tmp/',
-            createParentPath: true
+  useTempFiles: true,
+  tempFileDir: '/tmp/',
+  createParentPath: true
 }));
 app.use(morgan("tiny"));
 
@@ -45,7 +45,7 @@ app.use("/api/v1/password", passwordRoutes);
 // db.sequelize.sync({ force: true }).then(() => {
 //   app.listen(port, () => {
 //     console.log(`App listening on port ${port}`);
-    
+
 //   });
 // });
 

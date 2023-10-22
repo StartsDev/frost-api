@@ -25,7 +25,7 @@ const port = process.env.PORT || 8000;
 //   });
 // };
 // createUsers();
-app.use(express_1.default.json());
+app.use(express_1.default.json({ limit: '50mb' }));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)());
 app.use(fileUpload({
