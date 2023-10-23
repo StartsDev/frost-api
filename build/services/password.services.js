@@ -77,7 +77,7 @@ const createPwdServ = (pwd) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.createPwdServ = createPwdServ;
-// Forgot password
+// Reset Password
 const forgotPasswordsServ = (email) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const uuid = uuidv4();
@@ -138,8 +138,6 @@ const forgotPasswordsServ = (email) => __awaiter(void 0, void 0, void 0, functio
             from: `'"Admon Aires S.A.S 👻" <${process.env.EMAIL_ACCOUNT}>'`,
             to: plainUser.email,
             subject: "Notificación cambio de contraseña usuarios Aires S.A.S ✔",
-            /*  html: `<b>Por favor da click en este enlace o pegalo en tu navegador para completar el proceso:</b>
-                 <a href="${verificationLink}">${verificationLink}</a>`, // html body */
             template: "email",
             context: {
                 title: "Notificación cambio de contraseña",

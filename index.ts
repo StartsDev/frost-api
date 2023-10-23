@@ -14,17 +14,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 8000;
 
-// import { users } from "./seeders/users";
-// Seeders Users
-// const createUsers = () => {
-//   users.forEach(function (user) {
-//     db.User.create(user);
-//   });
-// };
-
-// createUsers();
-
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(fileUpload({

@@ -66,7 +66,7 @@ const createPwdServ = async (pwd: any) => {
   }
 };
 
-// Forgot password
+// Reset Password
 const forgotPasswordsServ = async (email: any) => {
   try {
     const uuid = uuidv4();
@@ -141,8 +141,6 @@ const forgotPasswordsServ = async (email: any) => {
       from: `'"Admon Aires S.A.S 👻" <${process.env.EMAIL_ACCOUNT}>'`, // sender address
       to: plainUser.email, // list of receivers
       subject: "Notificación cambio de contraseña usuarios Aires S.A.S ✔", // Subject line
-      /*  html: `<b>Por favor da click en este enlace o pegalo en tu navegador para completar el proceso:</b>
-           <a href="${verificationLink}">${verificationLink}</a>`, // html body */
       template: "email",
       context: {
         title: "Notificación cambio de contraseña",

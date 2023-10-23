@@ -1,4 +1,4 @@
-const cloudinary = require("cloudinary").v2;
+const { v2: cloudinary } = require('cloudinary');
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -9,14 +9,12 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadImageCloud = async (filePath: any) => {
+const uploadImageCloud = async (filePath: string) => {
   try {
-    const { secure_url } = await cloudinary.uploader.upload(filePath, {
-      folder: "aires",
-    });
-    return secure_url;
+    const result = await cloudinary.uploader.upload(filePath, {folder: "aires"});
+    return result.url;
   } catch (error) {
-    console.error(error)
+    throw new Error('Upload failed');
   }
 };
 

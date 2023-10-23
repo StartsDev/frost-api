@@ -11,20 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.upImgAvatar = void 0;
 const avatar_service_1 = require("../services/avatar.service");
-const { uploadImageCloud } = require("../utils/cloudinary");
 const upImgAvatar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        if (!req.files.image) {
-            res.status(400).json({ msg: "Cargue una imagen...", success: false });
-        }
-        const { tempFilePath } = req.files.image;
-        const { id } = req.params;
-        const secure_url = yield uploadImageCloud(tempFilePath);
-        if (!secure_url) {
-            res.status(400).json("No fue posible subir la imagen...");
-        }
-        const response = yield (0, avatar_service_1.uploadAvatarServ)(secure_url, id);
-        res.status(200).json(response);
+        const { tempFilePath } = req.files.data;
+        const url = yield (0, avatar_service_1.uploadAvatarServ)(tempFilePath, req.params.id);
+        res.json({ url });
     }
     catch (error) {
         if (error instanceof Error)

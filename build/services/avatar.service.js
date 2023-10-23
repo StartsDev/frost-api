@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploadAvatarServ = void 0;
 const User = require("../models/user");
+const { uploadImageCloud } = require("../utils/cloudinary");
 const uploadAvatarServ = (image, id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const findUser = yield User.findOne({
@@ -22,7 +23,8 @@ const uploadAvatarServ = (image, id) => __awaiter(void 0, void 0, void 0, functi
                 success: false
             };
         }
-        const updateUser = yield User.update({ image }, {
+        const result = yield uploadImageCloud(image);
+        const updateUser = yield User.update({ image: result }, {
             where: { id }
         });
         if (updateUser <= 0) {

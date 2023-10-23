@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const cloudinary = require("cloudinary").v2;
+const { v2: cloudinary } = require('cloudinary');
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 // Configuration
@@ -23,13 +23,11 @@ cloudinary.config({
 });
 const uploadImageCloud = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { secure_url } = yield cloudinary.uploader.upload(filePath, {
-            folder: "aires",
-        });
-        return secure_url;
+        const result = yield cloudinary.uploader.upload(filePath, { folder: "aires" });
+        return result.url;
     }
     catch (error) {
-        console.error(error);
+        throw new Error('Upload failed');
     }
 });
 const deleteImage = (publicId) => __awaiter(void 0, void 0, void 0, function* () {
