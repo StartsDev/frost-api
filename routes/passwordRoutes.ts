@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createPassword, forgotPassword, VerifyRToken, newPassword } from "../controllers/password.controller";
-import { verifyToken, isSuperUser } from '../middleware/authjwt';
+import { verifyToken } from '../middleware/authjwt';
 
 const router = Router();
 
@@ -8,12 +8,12 @@ const router = Router();
 router.post("/create", createPassword);
 
 // Reset password
-router.post('/reset-password',verifyToken, isSuperUser, forgotPassword);
+router.post('/reset-password',verifyToken, forgotPassword);
 
 // Verify reset-token
-router.post('/verify-reset-token/:token',verifyToken, isSuperUser, VerifyRToken);
+router.post('/verify-reset-token/:token',verifyToken, VerifyRToken);
 
 // New password
-router.patch('/update-password', verifyToken, isSuperUser, newPassword);
+router.patch('/update-password', verifyToken, newPassword);
 
 export default router;
