@@ -17,7 +17,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const { Op } = require("sequelize");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const bulkCreate_1 = require("../utils/bulkCreate");
-const path_1 = __importDefault(require("path"));
+//import path from "path";
 const hbs = require("nodemailer-express-handlebars");
 const transporter = require("../mailer/mailer");
 const Password = require("../models/password");
@@ -74,36 +74,40 @@ const registerUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
                 };
             }
             const newUser = yield User.create(user);
-            // Notification by email
-            const handlebarOptions = {
-                viewEngine: {
-                    extName: ".handlebars",
-                    partialsDir: path_1.default.resolve("./views"),
-                    defaultLayout: false,
-                },
-                viewPath: path_1.default.resolve("./views"),
-                extName: ".handlebars",
-            };
-            transporter.use("compile", hbs(handlebarOptions));
-            const notification = yield transporter.sendMail({
-                from: `'"Admon Aires S.A.S 👻" <${process.env.EMAIL_ACCOUNT}>'`,
-                to: user.email,
-                subject: "Notificación registro de usuarios Aires S.A.S ✔",
-                template: "newUser",
-                context: {
-                    title: "Bienvenido a Aires S.A.S",
-                    text: `${user.firstName} ${user.lastName} ya hace parte del sistema Aires S.A.S, para poder ingresar a la plataforma debe solicitar la asignación de su contraseña.`,
-                    textFoot: "Por favor comunicarse con soporte de Aires S.A.S si tiene algun problema...",
-                },
-            });
-            if (!notification) {
-                return {
-                    msg: "La notificación no pudo ser enviada...",
-                    success: false,
-                };
-            }
+            /*  // Notification by email
+             const handlebarOptions = {
+               viewEngine: {
+                 extName: ".handlebars",
+                 partialsDir: path.resolve("./views"),
+                 defaultLayout: false,
+               },
+               viewPath: path.resolve("./views"),
+               extName: ".handlebars",
+             };
+         
+             transporter.use("compile", hbs(handlebarOptions));
+         
+             const notification = await transporter.sendMail({
+               from: `'"Admon Aires S.A.S 👻" <${process.env.EMAIL_ACCOUNT}>'`, // sender address
+               to: user.email, // list of receivers
+               subject: "Notificación registro de usuarios Aires S.A.S ✔", // Subject line
+               template: "newUser",
+               context: {
+                 title: "Bienvenido a Aires S.A.S",
+                 text: `${user.firstName} ${user.lastName} ya hace parte del sistema Aires S.A.S, para poder ingresar a la plataforma debe solicitar la asignación de su contraseña.`,
+                 textFoot:
+                   "Por favor comunicarse con soporte de Aires S.A.S si tiene algun problema...",
+               },
+             });
+             if (!notification) {
+               return {
+                 msg: "La notificación no pudo ser enviada...",
+                 success: false,
+               };
+             } */
             return {
-                msg: "Usuario creado satisfactoriamente. Por favor verificar su email",
+                //msg: "Usuario creado satisfactoriamente. Por favor verificar su email",
+                msg: "Usuario creado satisfactoriamente",
                 newUser,
                 success: true
             };

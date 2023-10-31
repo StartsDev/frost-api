@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 const { Op } = require("sequelize");
 import bcrypt from "bcrypt";
 import { bulkCreatefunction } from "../utils/bulkCreate";
-import path from "path";
+//import path from "path";
 const hbs = require("nodemailer-express-handlebars");
 const transporter = require("../mailer/mailer");
 const Password = require("../models/password");
@@ -64,7 +64,7 @@ const registerUser = async (user: any) => {
       }
       const newUser = await User.create(user);
 
-      // Notification by email
+     /*  // Notification by email
       const handlebarOptions = {
         viewEngine: {
           extName: ".handlebars",
@@ -94,9 +94,10 @@ const registerUser = async (user: any) => {
           msg: "La notificación no pudo ser enviada...",
           success: false,
         };
-      }
+      } */
       return {
-        msg: "Usuario creado satisfactoriamente. Por favor verificar su email",
+        //msg: "Usuario creado satisfactoriamente. Por favor verificar su email",
+        msg: "Usuario creado satisfactoriamente",
         newUser,
         success: true
       };
