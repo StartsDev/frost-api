@@ -12,7 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // const db:any = {};
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const { DB_USER, DB_NAME, DB_PASS, DB_HOST, DATABASE_URL } = process.env;
+//const {DB_USER, DB_NAME, DB_PASS, DB_HOST, DATABASE_URL} = process.env
+const DATABASE_URL = `postgres://postgres:Riguja89@localhost:5433/frost`;
 const { Sequelize, DataTypes, Op } = require('sequelize');
 // let sequelize: any;
 // if (config.use_env_variable) {
@@ -40,14 +41,14 @@ const { Sequelize, DataTypes, Op } = require('sequelize');
 //para uso desplegado
 const sequelize = new Sequelize(DATABASE_URL, {
     logging: false,
-    native: false,
+    native: false, // lets Sequelize know we can use pg-native for ~30% more speed
     // esta configuraion es por si es requerido por webserver desplegado, local no es necesario
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
-        }
-    }
+    // dialectOptions:{
+    //   ssl: {
+    //     require : false,
+    //     rejectUnauthorized: false
+    //   }
+    // }    
 });
 // fs.readdirSync(__dirname)
 //   .filter((file: string) => {

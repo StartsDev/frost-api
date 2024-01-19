@@ -196,8 +196,8 @@ const allUserRolServ = (user, page, pageSize) => __awaiter(void 0, void 0, void 
 exports.allUserRolServ = allUserRolServ;
 const updateUserServ = (id, userp) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { numIdent, firstName, lastName, email, phone, identId, roleId, clientId } = userp;
-        const [updateUser] = yield User.update({ numIdent, firstName, lastName, email, phone, identId, roleId, clientId }, {
+        const { numIdent, firstName, lastName, email, phone, identId, roleId, clientId, status } = userp;
+        const [updateUser] = yield User.update({ numIdent, firstName, lastName, email, phone, identId, roleId, clientId, status }, {
             where: {
                 id,
             },
