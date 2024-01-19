@@ -186,11 +186,11 @@ const allUserRolServ = async (user: any, page?: number, pageSize?: number) => {
 
 const updateUserServ = async (id: any, userp: any) => {
   try {
-    const { numIdent, firstName, lastName, email, phone, identId, roleId, clientId } =
+    const { numIdent, firstName, lastName, email, phone, identId, roleId, clientId, status } =
       userp;
     
     const [updateUser] = await User.update(
-      { numIdent, firstName, lastName, email, phone, identId, roleId, clientId },
+      { numIdent, firstName, lastName, email, phone, identId, roleId, clientId, status },
       {
         where: {
           id,

@@ -44,7 +44,7 @@ const sequelize = new Sequelize(DATABASE_URL, {
     // esta configuraion es por si es requerido por webserver desplegado, local no es necesario
     dialectOptions: {
         ssl: {
-            require: true,
+            require: false,
             rejectUnauthorized: false
         }
     }
