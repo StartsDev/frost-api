@@ -8,12 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.allTechServ = exports.deleteUserServ = exports.updateUserServ = exports.allUserRolServ = exports.getUserServ = exports.allUsers = void 0;
 const users_1 = require("./../seeders/users");
 const User = require("../models/user");
 const Identification = require("../models/identification");
 const Role = require("../models/role");
+const axios_1 = __importDefault(require("axios"));
 const allUsers = (page, pageSize) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let users;
@@ -194,33 +198,73 @@ const allUserRolServ = (user, page, pageSize) => __awaiter(void 0, void 0, void 
     }
 });
 exports.allUserRolServ = allUserRolServ;
-const updateUserServ = (id, userp) => __awaiter(void 0, void 0, void 0, function* () {
+const updateUserServ = (id, userp, token) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c;
+    const URL = process.env.URL_PRODUCTION_CORE || process.env.URL_DEVELOP_CORE;
+    const baseUrlPatchCustomer = `${URL}/client/update-client`;
+    const baseUrlGetCustomer = `${URL}/client/get-client`;
     try {
-        const { numIdent, firstName, lastName, email, phone, identId, roleId, clientId, status } = userp;
-        const [updateUser] = yield User.update({ numIdent, firstName, lastName, email, phone, identId, roleId, clientId, status }, {
-            where: {
-                id,
-            },
-            returning: true,
-        });
-        if (!updateUser) {
+        const { numIdent, firstName, lastName, email, phone, identId, roleId, clientId, status, deleteClient } = userp;
+        if (deleteClient) {
+            try {
+                const [updateUser] = yield User.update({ numIdent, firstName, lastName, email, phone, identId, roleId, clientId: null, status }, {
+                    where: {
+                        id,
+                    },
+                    returning: true,
+                });
+                const { data } = yield axios_1.default.get(`${baseUrlGetCustomer}/${clientId}`);
+                const userAppArray = (_c = (_b = (_a = data.client) === null || _a === void 0 ? void 0 : _a.client) === null || _b === void 0 ? void 0 : _b.user_app) === null || _c === void 0 ? void 0 : _c.filter((c) => c.user_id !== id);
+                yield axios_1.default.patch(`${baseUrlPatchCustomer}/${clientId}`, Object.assign(Object.assign({}, data.client.client), { user_app: userAppArray }), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-token': token
+                    }
+                });
+                if (!updateUser) {
+                    return {
+                        msg: "Usuario no válido...",
+                        success: false,
+                    };
+                }
+                if (updateUser <= 0) {
+                    return {
+                        msg: "Actualización no realizada...",
+                        success: false,
+                    };
+                }
+            }
+            catch (error) {
+                console.log('error: ', error);
+                throw ('ERROR: ' + error);
+            }
+        }
+        else {
+            const [updateUser] = yield User.update({ numIdent, firstName, lastName, email, phone, identId, roleId, clientId, status }, {
+                where: {
+                    id,
+                },
+                returning: true,
+            });
+            if (!updateUser) {
+                return {
+                    msg: "Usuario no válido...",
+                    success: false,
+                };
+            }
+            if (updateUser <= 0) {
+                return {
+                    msg: "Actualización no realizada...",
+                    success: false,
+                };
+            }
+            const user = yield User.findOne({ where: { id } });
             return {
-                msg: "Usuario no válido...",
-                success: false,
+                msg: "Usuario actualizado satisfactoriamente...",
+                user,
+                success: true,
             };
         }
-        if (updateUser <= 0) {
-            return {
-                msg: "Actualización no realizada...",
-                success: false,
-            };
-        }
-        const user = yield User.findOne({ where: { id } });
-        return {
-            msg: "Usuario actualizado satisfactoriamente...",
-            user,
-            success: true,
-        };
     }
     catch (e) {
         throw new Error(e);

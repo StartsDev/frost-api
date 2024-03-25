@@ -85,7 +85,7 @@ exports.getUsersRol = getUsersRol;
 // Update user
 const editUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield (0, user_services_1.updateUserServ)(req.params.id, req.body);
+        const user = yield (0, user_services_1.updateUserServ)(req.params.id, req.body, req.token);
         res.status(200).json(user);
     }
     catch (error) {
