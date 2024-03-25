@@ -9,6 +9,7 @@ const Password = require("../models/password");
 const User = require("../models/user");
 const Role = require("../models/role");
 const Identification = require("../models/identification");
+const { MESSAGE_AUTH} = require("../utils/constant")
 
 require("dotenv").config();
 
@@ -28,13 +29,13 @@ const registerUser = async (user: any) => {
           }
         );
         return {
-          msg: "Usuario creado satisfactoriamente. Por favor verificar su correo...",
+          msg: MESSAGE_AUTH.userCreated,
           success: true
         };
         // Notification email
       } else {
         return {
-          msg: "Este usuario ya esta registrado...",
+          msg: MESSAGE_AUTH.userPreviousRegistered,
           success: false
         };
       }
@@ -44,21 +45,21 @@ const registerUser = async (user: any) => {
       })
       if (userEmail) {
         return {
-          msg: "Ya existe un susuario registrado con este email...",
+          msg: MESSAGE_AUTH.emailExist,
           success: false
         };
       }
       const foundIdentId = await Identification.findOne({ where: { id: user.identId } });
       if (!foundIdentId) {
         return {
-          msg: "Tipo de identificación no existe...",
+          msg: MESSAGE_AUTH.idNotExist,
           success: false
         }
       }
       const foundRolId = await Role.findOne({ where: { id: user.roleId } });
       if (!foundRolId) {
         return {
-          msg: "Tipo de rol no existe...",
+          msg: MESSAGE_AUTH.roleNotExist,
           success: false
         }
       }
@@ -97,7 +98,7 @@ const registerUser = async (user: any) => {
       } */
       return {
         //msg: "Usuario creado satisfactoriamente. Por favor verificar su email",
-        msg: "Usuario creado satisfactoriamente",
+        msg: MESSAGE_AUTH.userCreated,
         newUser,
         success: true
       };
@@ -125,7 +126,7 @@ const loginUserServ = async (user: any) => {
     });
     if (!foundUser) {
       return {
-        msg: "Usuario no encontrado...",
+        msg: MESSAGE_AUTH.userNotFound,
         success: false
       };
     }
@@ -134,7 +135,7 @@ const loginUserServ = async (user: any) => {
     });
     if (!foundPassword) {
       return {
-        msg: "El password no ha sido asignado a este usuario...",
+        msg: MESSAGE_AUTH.passwordNotAsigned,
         success: false
       };
     }
@@ -144,7 +145,7 @@ const loginUserServ = async (user: any) => {
     );
     if (!isPasswordMatch) {
       return {
-        msg: "Clave incorrecta...",
+        msg: MESSAGE_AUTH.incorrectPassword,
         success: false
       };
     }
@@ -164,7 +165,7 @@ const loginUserServ = async (user: any) => {
     );
 
     return {
-      msg: "Usuario logueado satisfactoriamente...",
+      msg: MESSAGE_AUTH.userLogued,
       token,
       user: foundUser,
       success: true
@@ -192,7 +193,7 @@ const getUserServ = async (user: any, token: any) => {
     });
     if (!user) {
       return {
-        msg: "Este usuario no existe",
+        msg: MESSAGE_AUTH.userNotFound,
         success: false
       };
     }
@@ -209,11 +210,11 @@ const getUserServ = async (user: any, token: any) => {
 const bulkCreateUser = async (data: Array<{}>) => {
   try {
     await bulkCreatefunction(User, data)
-    return 'Usuarios Creados'
+    return MESSAGE_AUTH.userCreated
   } catch (error) {
     console.log(error);
     return {
-      message: 'hubo un error en la creacion',
+      message: MESSAGE_AUTH.creationError,
       success: false,
     }
   }

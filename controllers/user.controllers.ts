@@ -78,9 +78,9 @@ const getUsersRol = async (req: Request, res: Response) => {
 };
 
 // Update user
-const editUser = async (req: Request, res: Response) => {
+const editUser = async (req: any, res: Response) => {
   try {
-    const user = await updateUserServ(req.params.id, req.body);
+    const user = await updateUserServ(req.params.id, req.body, req.token);
     res.status(200).json(user);
   } catch (error) {
     if (error instanceof Error) res.status(400).json({ error: error.message });
